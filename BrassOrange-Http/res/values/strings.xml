@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Brass Orange</string>
+    <string name="action_settings">Settings</string>
+    <string name="label_Protocol">http://</string>
+    <string name="input_Url">192.168.2.104</string>
+    <string name="btn_Go">Go!</string>
+
+</resources>
