@@ -1,17 +1,21 @@
 package com.brassorange.http;
 
-import com.brassorange.http.HttpActivity;
+import android.content.Intent;
+import android.provider.Settings;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -33,10 +37,14 @@ public class MainActivity extends Activity {
 
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo == null)
+        if (networkInfo == null) {
         	Log.e("NW", "No Network Info");
-        else if (!networkInfo.isConnected())
+        } else if (!networkInfo.isConnectedOrConnecting()) {
         	Log.e("NW", "Network not connected");
+        	turnNetworkOn();
+        } else {
+        	Log.i("NW", "Network available: " + networkInfo.getType());
+        }
     }
 
     @Override
@@ -45,5 +53,35 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
+    private void turnNetworkOn() {
+		// custom dialog
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.dialog_network);
+		dialog.setTitle("Need netwotk connection");
+
+		TextView text = (TextView) dialog.findViewById(R.id.text);
+		text.setText("Android custom dialog example!");
+		ImageView image = (ImageView) dialog.findViewById(R.id.image);
+		image.setImageResource(R.drawable.ic_launcher);
+
+		Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		dialogButtonOk.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                //startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+				dialog.dismiss();
+			}
+		});
+		Button dialogButtonCancel = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+		dialogButtonCancel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+		dialog.show();
+    }
 }
