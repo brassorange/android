@@ -35,7 +35,12 @@ public class MainActivity extends Activity {
             }
         });
 
+        // Check network connection
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetwork = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobileNetwork = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        Log.i("NW", "wifiNetwork: " + wifiNetwork.getExtraInfo());
+        Log.i("NW", "mobileNetwork: " + mobileNetwork.getExtraInfo());
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo == null) {
         	Log.e("NW", "No Network Info");
@@ -43,7 +48,7 @@ public class MainActivity extends Activity {
         	Log.e("NW", "Network not connected");
         	turnNetworkOn();
         } else {
-        	Log.i("NW", "Network available: " + networkInfo.getType());
+        	Log.i("NW", "Network available: " + networkInfo.getExtraInfo());
         }
     }
 
