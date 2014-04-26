@@ -1,8 +1,25 @@
 package com.brassorange.eventapp;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+
+import com.brassorange.eventapp.dummy.DummyContent;
+import com.brassorange.eventapp.dummy.DummyContent.DummyItem;
+import com.brassorange.eventapp.model.Agenda;
+import com.brassorange.eventapp.model.Event;
+import com.brassorange.eventapp.services.HttpRetriever;
+import com.brassorange.eventapp.services.XmlParser;
+
+import android.app.Application;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 
 /**
@@ -29,6 +46,9 @@ public class ItemListActivity extends FragmentActivity
      * device.
      */
     private boolean mTwoPane;
+    private String URL_AGENDA = "http://brassorange.com/samplepages/agenda.xml?";
+    private boolean isUpdated = false;
+    private Drawable drawableSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +70,15 @@ public class ItemListActivity extends FragmentActivity
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
+
+        // -----------------------------------------------------------------------
+        Log.d(getClass().getSimpleName(), "onCreate");
+        if (!isUpdated) {
+	        Updater updater = new Updater();
+	        updater.execute();
+        }
+        findViewById(R.id.item_list).setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        // -----------------------------------------------------------------------
     }
 
     /**
@@ -78,4 +107,78 @@ public class ItemListActivity extends FragmentActivity
             startActivity(detailIntent);
         }
     }
+
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+	public class Updater extends AsyncTask<String, Void, Agenda> {
+		String responseXml = "<agenda><splashUrl>splash.png</splashUrl><event><id>1</id><title>Brad Pitt 1</title><summary>Brad Pitt 1 - Summary</summary><content>One - William Bradley 'Brad' Pitt (born December 18, 1963) is an American actor and film producer. Pitt has received two Academy Award nominations and four Golden Globe Award nominations, winning one. He has been described as one of the world's most attractive men, a label for which he has received substantial media attention.</content><date>22-APR-2014</date><hour>10:00</hour><duration>1:40</duration><popularity>3</popularity><url>http://www.themoviedb.org/person/287</url><images></images><location>Hall 92</location><last_modified_at>2010-10-24 10:22:10</last_modified_at></event><event><id>2</id><title>Brad Pitt 2</title><summary>Brad Pitt 2 - Summary</summary><content>Two - William Bradley 'Brad' Pitt (born December 18, 1963) is an American actor and film producer. Pitt has received two Academy Award nominations and four Golden Globe Award nominations, winning one. He has been described as one of the world's most attractive men, a label for which he has received substantial media attention.</content><date>22-APR-2014</date><hour>10:30</hour><duration>1:50</duration><popularity>3</popularity><url>http://www.themoviedb.org/person/287</url><images></images><location>Hall 92</location><last_modified_at>2010-10-24 10:22:10</last_modified_at></event></agenda>";
+		boolean isHttpUpdate = false;
+
+		@Override
+		protected Agenda doInBackground(String... params) {
+			Log.d(getClass().getSimpleName(), "doInBackground");
+
+			if (isHttpUpdate) {
+		        HttpRetriever httpRetriever = new HttpRetriever();
+		        responseXml = httpRetriever.retrieve(URL_AGENDA);
+			}
+
+			XmlParser xmlParser = new XmlParser();
+			return xmlParser.parseAgendaResponse(responseXml);
+		}
+
+		@Override
+		protected void onPostExecute(final Agenda agenda) {			
+			runOnUiThread(new Runnable() {
+		    	@Override
+		    	public void run() {
+					Log.d(getClass().getSimpleName(), "onPostExecute runOnUiThread run()");
+
+		    		// Load the objects from the updater
+					DummyContent dc = new DummyContent();
+					dc.SPLASH_URL = agenda.splashUrl;
+					dc.ITEMS.clear();
+					int i = 1;
+					ArrayList<Event> eventList = agenda.eventList;
+		    		for (Event event: eventList) {
+		    			// Set the object fields
+		    			DummyItem di = new DummyItem(String.valueOf(i), event.title);
+		    			di.summary = event.summary;
+		    			di.content = event.content;
+		    			dc.addItem(di);
+						i++;
+		    		}
+
+		    		// Reflect the newly loaded structure in ItemListFragment
+		    		((ItemListFragment)getSupportFragmentManager().findFragmentById(R.id.item_list)).createListAdapter();
+
+		    		if (mTwoPane) {
+		            	// Show splash screen
+		    			Log.d(getClass().getSimpleName(), "Show splash screen");
+		            	Bundle arguments = new Bundle();
+		                final ItemDetailFragment fragment = new ItemDetailFragment();
+		                fragment.setArguments(arguments);
+		                
+		                getSupportFragmentManager().beginTransaction()
+		                        .replace(R.id.item_detail_container, fragment)
+		                        .commit();
+
+		                //System.out.println(getFragmentManager().findFragmentById(R.id.fragment_item_detail));
+
+		                //imageSplash = (ImageView)getSupportFragmentManager()
+						//		.findFragmentById(R.id.item_detail_container).getView()
+						//		.findViewById(R.id.imageSplash);
+		                //UpdaterSplash updaterSplash = new UpdaterSplash("http://brassorange.com/samplepages/" + DummyContent.SPLASH_URL);
+		    	        //updaterSplash.execute();
+		            }
+
+		    		isUpdated = true;
+		    	}
+			});
+		};
+	}
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
 }

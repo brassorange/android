@@ -2,9 +2,11 @@ package com.brassorange.eventapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brassorange.eventapp.dummy.DummyContent;
@@ -21,7 +23,6 @@ public class ItemDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
-
     /**
      * The dummy content this fragment is presenting.
      */
@@ -38,6 +39,7 @@ public class ItemDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(getClass().getSimpleName(), "onCreate");
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
@@ -49,13 +51,36 @@ public class ItemDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_item_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
+    	Log.d(getClass().getSimpleName(), "onCreateView");
+    	Log.d(getClass().getSimpleName(), "setSplash " + DummyContent.SPLASH_URL);
+
+    	View fragmentItemDetail = inflater.inflate(R.layout.fragment_item_detail, container, false);
+        ImageView imageSplash = (ImageView)fragmentItemDetail.findViewById(R.id.imageSplash);
+        ImageView itemIcon = (ImageView)fragmentItemDetail.findViewById(R.id.eventIcon);
+        TextView itemSummary = (TextView)fragmentItemDetail.findViewById(R.id.eventSummary);
+        TextView itemContent = (TextView)fragmentItemDetail.findViewById(R.id.eventContent);
+
+        // Initial state - splash screen shown, everything other is hidden
+        itemIcon.setVisibility(View.GONE);
+        itemSummary.setVisibility(View.GONE);
+        itemContent.setVisibility(View.GONE);
+
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.content);
+        	// Hide splash screen, show everything other
+        	imageSplash.setVisibility(View.GONE);
+        	itemIcon.setVisibility(View.VISIBLE);
+            itemSummary.setVisibility(View.VISIBLE);
+            itemContent.setVisibility(View.VISIBLE);
+            itemSummary.setText(mItem.summary);
+            itemContent.setText(mItem.content);
         }
 
-        return rootView;
+        return fragmentItemDetail;
     }
+
+    public void setSplash() {
+    	Log.d(getClass().getSimpleName(), "setSplash");
+    }
+
 }
