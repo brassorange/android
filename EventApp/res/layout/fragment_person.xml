@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/person"
+    android:background="#a0a0a0"
+	android:layout_marginTop="120dp"
+	android:layout_marginLeft="120dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/personName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginBottom="10dp"
+        android:text="Catherine Ashton"
+        android:textColor="#303030"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <ScrollView
+       	android:id="@+id/personBioScroll"
+        android:paddingBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/personName"
+        android:layout_alignLeft="@id/personName" >
+		<TextView
+	        android:id="@+id/personBio"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Catherine Ashton is the European Union’s first high representative for foreign affairs and security policy and vice-president of the European Commission. She heads the European External Action Service (EEAS), which was set up to support the work of her position. She is the chief negotiator on behalf of the E3/EU+3 on Iran’s nuclear program and has also facilitated the dialogue for the normalization of relations between Serbia and Kosovo. Ashton initiated the EU’s Task Force concept, launching them in Tunisia, Jordan, Egypt, and Myanmar. As the European commissioner for trade, Ashton led major negotiations on the Free Trade Agreement with Korea, finalized in October 2009, and solved a number of high-profile trade disputes with major trading partners. Previously, Ashton held a number of different positions in U.K. public life and was made a life peer as a result of work toward building communities (1999)."
+	        android:textColor="#303030"
+	        android:textSize="14sp" />
+	</ScrollView>
+</RelativeLayout>

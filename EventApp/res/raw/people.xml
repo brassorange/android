@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<people>
+	<person>
+		<id>1</id>
+		<name>Catherine Ashton</name>
+		<title>EU High Representative for Foreign Affairs and Security Policy and Vice-President, European Commission</title>
+		<biography>Catherine Ashton is the European Union’s first high representative for foreign affairs and security policy and vice-president of the European Commission. She heads the European External Action Service (EEAS), which was set up to support the work of her position. She is the chief negotiator on behalf of the E3/EU+3 on Iran’s nuclear program and has also facilitated the dialogue for the normalization of relations between Serbia and Kosovo. Ashton initiated the EU’s Task Force concept, launching them in Tunisia, Jordan, Egypt, and Myanmar. As the European commissioner for trade, Ashton led major negotiations on the Free Trade Agreement with Korea, finalized in October 2009, and solved a number of high-profile trade disputes with major trading partners. Previously, Ashton held a number of different positions in U.K. public life and was made a life peer as a result of work toward building communities (1999).</biography>
+		<imageName>ashton_catherine</imageName>
+		<email>boris.m.georgiev@gmail.com</email>
+	</person>
+	<person>
+		<id>2</id>
+		<name>John R. Allen</name>
+		<title>Member of the Board of Directors, Center for a New American Security</title>
+		<biography>General John R. Allen commanded the International Security Assistance Force–Afghanistan and United States Forces–Afghanistan from 2011-13. Prior to assuming command of the NATO and U.S. forces in Afghanistan, Allen commanded at every level in the Marine Corps through Marine Expeditionary Brigade. He has served as the Marine Corps fellow to the Center for Strategic and International Studies, a commandant of the Marine Corps fellow, and was the first Marine officer to serve as a term member of the Council on Foreign Relations. He is currently senior advisor to the secretary of defense on Middle East security. Allen holds a bachelor’s in operations analysis from the Naval Academy, a master’s in national security studies from Georgetown University, a master’s in strategic intelligence from the Defense Intelligence College, and a master’s in national security strategy from the National War College.</biography>
+		<imageName>allen_john</imageName>
+		<email>boris.georgiev@solarmapper.com</email>
+	</person>
+</people>
