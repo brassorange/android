@@ -1,5 +1,6 @@
 package com.brassorange.eventapp;
 
+import android.provider.Settings.Secure;
 import java.util.TimerTask;
 
 import com.brassorange.eventapp.services.Responder;
@@ -10,6 +11,7 @@ import com.brassorange.eventapp.util.PrefTools;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +26,6 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	//private int uid = 872429837;
 	public FileUtils fileUtils;
 	public PrefTools prefTools;
 	public String mailAccount = "boris.m.georgiev@gmail.com";
@@ -33,6 +34,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		EventApp.uid = Secure.getString(this.getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
 
 		fileUtils = new FileUtils(getApplicationContext());
 		prefTools = new PrefTools(getApplicationContext());
@@ -79,6 +82,10 @@ notificationManager.notify(1, notification);
 				return true;
 			case R.id.action_refresh:
 				// refresh
+				return true;
+			case R.id.action_profile:
+				Intent intent = new Intent(this, ProfileActivity.class);
+				startActivity(intent); 
 				return true;
 			case R.id.action_help:
 				// help action

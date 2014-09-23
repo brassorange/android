@@ -14,6 +14,14 @@
 		android:title="@string/action_refresh"
 		android:showAsAction="ifRoom" />
 
+	<!-- The following items are not shown, but are listed beneath the "three-dot" icon -->
+
+	<!-- Profile -->
+	<item android:id="@+id/action_profile"
+		android:icon="@drawable/ic_action_profile"
+		android:title="@string/action_profile"
+		android:showAsAction="never"/>
+
 	<!-- Help -->
 	<item android:id="@+id/action_help"
 		android:icon="@drawable/ic_action_help"
@@ -25,7 +33,7 @@
 		android:title="@string/action_settings"
 		android:showAsAction="never"/>
 
-		<!-- Check updates -->
+	<!-- Check updates -->
 	<item android:id="@+id/action_check_updates"
 		android:icon="@drawable/ic_action_refresh"
 		android:title="@string/action_check_updates"

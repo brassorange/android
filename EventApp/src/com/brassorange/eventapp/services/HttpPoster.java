@@ -1,26 +1,30 @@
 package com.brassorange.eventapp.services;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
-public class HttpRetriever {
+public class HttpPoster {
 
 	private DefaultHttpClient client = new DefaultHttpClient();		
-	public String retrieve(String url) {
+	public String post(String url, List params) {
 
 		Log.d(getClass().getSimpleName(), "retrieve " + url);
-        HttpGet getRequest = new HttpGet(url);
+        HttpPost postRequest = new HttpPost(url);
 
 		try {
-			HttpResponse getResponse = client.execute(getRequest);
+	        postRequest.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+			HttpResponse getResponse = client.execute(postRequest);
 			final int statusCode = getResponse.getStatusLine().getStatusCode();
 			Log.d(getClass().getSimpleName(), "statusCode=" + statusCode);
 
@@ -37,7 +41,7 @@ public class HttpRetriever {
 			}
 		} 
 		catch (IOException e) {
-			getRequest.abort();
+			postRequest.abort();
 	        Log.w(getClass().getSimpleName(), "Error for URL " + url, e);
 		}
 

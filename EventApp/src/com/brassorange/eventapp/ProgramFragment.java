@@ -1,5 +1,11 @@
 package com.brassorange.eventapp;
 
+/* ProgramFragment
+ * 
+ * Displays the program item content.
+ * 
+ */
+
 import java.io.File;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -12,6 +18,7 @@ import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
 import com.brassorange.eventapp.services.CalendarTools;
 import com.brassorange.eventapp.services.EmailTools;
+import com.brassorange.eventapp.services.UserService;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -38,10 +45,6 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.ScrollView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
-
-/*
- * Displays the program item content 
- */
 
 public class ProgramFragment extends Fragment {
 
@@ -169,10 +172,13 @@ public class ProgramFragment extends Fragment {
 		btnPogramItemSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				mainActivity.fileUtils.writeFileToInternalStorage(fileNameComments, String.valueOf(editPIComments.getText()));
+				String commentsText = String.valueOf(editPIComments.getText());
+				mainActivity.fileUtils.writeFileToInternalStorage(fileNameComments, commentsText);
 				mainActivity.provideResponse();
 				String lastModifiedAsText = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date());
 				viewPICommentsInfo.setText("Last modified: " + lastModifiedAsText);
+
+				(new UserService()).execute("comment", String.valueOf(programItemId), commentsText);
 			}
 		});
 
@@ -194,6 +200,8 @@ public class ProgramFragment extends Fragment {
 					if (fromUser) {
 						mainActivity.prefTools.storePreference(prefNameRating, String.valueOf(value));
 						mainActivity.provideResponse();
+
+						(new UserService()).execute("rate", String.valueOf(programItemId), String.valueOf(value));
 					}
 				}
 			});
