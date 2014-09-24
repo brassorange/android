@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.brassorange.eventapp.AgendaFragment;
+import com.brassorange.eventapp.EventApp;
 import com.brassorange.eventapp.ProgramFragment;
 import com.brassorange.eventapp.R;
 import com.brassorange.eventapp.model.Person;
@@ -17,7 +18,6 @@ import com.brassorange.eventapp.services.FileUtils;
 public class Updater extends AsyncTask<String, Void, Program> {
 
 	private Activity activity;
-	private String URL_AGENDA = "http://brassorange.com/samplepages/agenda.xml?";
 
 	public Updater(Activity activity) {
 		this.activity = activity;
@@ -50,7 +50,7 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		// Get from HTTP
         if (programXml == "") {
 	        HttpRetriever httpRetriever = new HttpRetriever();
-	        programXml = httpRetriever.retrieve(URL_AGENDA);
+	        programXml = httpRetriever.retrieve(EventApp.urlAgenda);
         }
 
         FileUtils fileUtils = new FileUtils(activity.getApplicationContext());

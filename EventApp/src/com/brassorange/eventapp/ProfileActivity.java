@@ -1,6 +1,7 @@
 package com.brassorange.eventapp;
 
 import com.brassorange.eventapp.services.CameraPreview;
+import com.brassorange.eventapp.services.CompletionListener;
 import com.brassorange.eventapp.services.UserService;
 
 import android.app.Activity;
@@ -11,7 +12,6 @@ import android.hardware.Camera.Size;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,7 +27,7 @@ import net.sourceforge.zbar.Config;
 //http://thorbek.net/online/2013/10/11/an-integrated-qr-scanner-in-android-activity/
 //   http://code.tutsplus.com/tutorials/android-sdk-create-a-barcode-reader--mobile-17162
 
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends Activity implements CompletionListener {
 	private Camera mCamera;
 	private CameraPreview mPreview;
 	private Handler autoFocusHandler;
@@ -62,7 +62,9 @@ public class ProfileActivity extends Activity {
 		preview.addView(mPreview);
 		txtScan = (TextView)findViewById(R.id.txtScan);
 		btnScan = (Button)findViewById(R.id.btnScan);
-		
+
+		txtScan.setText(EventApp.firstName + " --- " + EventApp.lastName);
+
 		btnScan.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (barcodeScanned) {
@@ -75,7 +77,7 @@ public class ProfileActivity extends Activity {
 				}
 				if ("sdk".equals(Build.PRODUCT)) {
 					barcodeScanned = true;
-					getProfile("72846872");
+					getProfile("9832749832");
 					return;
 				}
 			}
@@ -120,6 +122,15 @@ public class ProfileActivity extends Activity {
 	};
 
 	private void getProfile(String profileId) {
-		(new UserService()).execute("profile", profileId);
+//		txtScan.setText("getProfile " + profileId);
+		UserService us = new UserService(this);
+		us.execute("profile", profileId);
 	}
+
+	@Override
+	public void onTaskCompleted() {
+		// TODO Auto-generated method stub
+		txtScan.setText(EventApp.firstName + " " + EventApp.lastName);
+	}
+
 }

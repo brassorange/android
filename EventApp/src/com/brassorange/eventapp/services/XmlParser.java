@@ -12,16 +12,16 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.brassorange.eventapp.model.Person;
+import com.brassorange.eventapp.model.Profile;
 import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.services.parsers.PersonParser;
+import com.brassorange.eventapp.services.parsers.ProfileParser;
 import com.brassorange.eventapp.services.parsers.ProgramParser;
 
 public class XmlParser {
 	private XMLReader initializeReader() throws ParserConfigurationException, SAXException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
-		// create a parser
 		SAXParser parser = factory.newSAXParser();
-		// create the reader (scanner)
 		XMLReader xmlreader = parser.getXMLReader();
 		return xmlreader;
 	}
@@ -29,14 +29,10 @@ public class XmlParser {
 	public Program parseProgramResponse(String xml) {
 		try {
 			XMLReader xmlreader = initializeReader();
-			ProgramParser agendaHandler = new ProgramParser();
-
-			// assign our handler
-			xmlreader.setContentHandler(agendaHandler);
-			// perform the synchronous parse
+			ProgramParser programHandler = new ProgramParser();
+			xmlreader.setContentHandler(programHandler);
 			xmlreader.parse(new InputSource(new StringReader(xml)));
-
-			return agendaHandler.retrieveAgenda();
+			return programHandler.retrieveAgenda();
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -48,13 +44,23 @@ public class XmlParser {
 		try {
 			XMLReader xmlreader = initializeReader();
 			PersonParser peopleHandler = new PersonParser();
-
-			// assign our handler
 			xmlreader.setContentHandler(peopleHandler);
-			// perform the synchronous parse
 			xmlreader.parse(new InputSource(new StringReader(xml)));
-
 			return peopleHandler.retrievePeople();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}		
+	}
+
+	public Profile parseProfileResponse(String xml) {
+		try {
+			XMLReader xmlreader = initializeReader();
+			ProfileParser profileHandler = new ProfileParser();
+			xmlreader.setContentHandler(profileHandler);
+			xmlreader.parse(new InputSource(new StringReader(xml)));
+			return profileHandler.retrieveProfile();
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

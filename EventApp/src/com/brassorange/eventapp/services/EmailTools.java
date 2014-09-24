@@ -10,7 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 
-import com.brassorange.eventapp.MainActivity;
+import com.brassorange.eventapp.EventApp;
 import com.sun.mail.smtp.SMTPTransport;
 import com.sun.mail.util.BASE64EncoderStream;
 
@@ -35,7 +35,7 @@ public class EmailTools {
 
 	public EmailTools(final Activity activity) {
 		this.activity = activity;
-		mailAccount = ((MainActivity)activity).mailAccount;
+		mailAccount = EventApp.mailAccount;
 
 		final String SCOPE = "https://mail.google.com/";
 

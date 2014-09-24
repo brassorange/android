@@ -32,7 +32,8 @@ public class HttpRetriever {
 			HttpEntity getResponseEntity = getResponse.getEntity();
 			if (getResponseEntity != null) {
 				String response = EntityUtils.toString(getResponseEntity);
-				Log.d(getClass().getSimpleName(), "response: " + String.valueOf(response).length() + " bytes.\n" + response.substring(0, 200));
+				response = response.substring(0, response.indexOf("<!-- Hosting24 Analytics Code -->"));
+				Log.d(getClass().getSimpleName(), "response: " + String.valueOf(response).length() + " bytes.");
 				return response;
 			}
 		} 

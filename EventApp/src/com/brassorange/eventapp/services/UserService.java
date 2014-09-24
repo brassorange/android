@@ -7,6 +7,7 @@ package com.brassorange.eventapp.services;
  * 
  */
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,25 +15,32 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.brassorange.eventapp.EventApp;
+import com.brassorange.eventapp.model.Person;
+import com.brassorange.eventapp.model.Profile;
+import com.brassorange.eventapp.model.Program;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class UserService extends AsyncTask<String, Void, String> {
 
-	public UserService() {
+	String actionType = "";
+	private CompletionListener listener;
+
+	public UserService(CompletionListener listener) {
+		this.listener = listener;
 	}
 
 	@Override
 	protected String doInBackground(String... arg0) {
 		HttpPoster httpPoster = new HttpPoster();
 		List<NameValuePair> params = new ArrayList<NameValuePair>(2);
-		String actionType = arg0[0];
+		actionType = arg0[0];
 
 		if (actionType.equals("profile")) {
 			params.add(new BasicNameValuePair("id", arg0[1]));
-			String output = httpPoster.post(EventApp.urlGetProfile, params);
-			Log.d(this.getClass().getSimpleName(), output);
+			String response = httpPoster.post(EventApp.urlGetProfile, params);
+			return response;
 		} else {
 			String programItemId = arg0[1];
 			params.add(new BasicNameValuePair("uid", EventApp.uid));
@@ -50,4 +58,25 @@ public class UserService extends AsyncTask<String, Void, String> {
 		return null;
 	}
 
+
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+	}
+
+	@Override
+	protected void onPostExecute(String result) {
+		super.onPostExecute(result);
+		if (actionType.equals("profile")) {
+			Log.d(this.getClass().getSimpleName(), result);
+
+			XmlParser xmlParser = new XmlParser();
+			Profile profile = xmlParser.parseProfileResponse(result);
+			if (profile != null) {
+				EventApp.firstName = profile.firstName;
+				EventApp.lastName = profile.lastName;
+			}
+			listener.onTaskCompleted();
+		}
+	}
 }

@@ -43,8 +43,8 @@ public final class R {
         public static final int agendaItemImage=0x7f0a0014;
         public static final int agendaItemList=0x7f0a0013;
         public static final int agendaItemName=0x7f0a0015;
-        public static final int btnScan=0x7f0a0011;
-        public static final int cameraPreview=0x7f0a000e;
+        public static final int btnScan=0x7f0a0010;
+        public static final int cameraPreview=0x7f0a0011;
         public static final int content=0x7f0a0003;
         public static final int eventName=0x7f0a0031;
         public static final int fragAgenda=0x7f0a0001;
@@ -84,9 +84,9 @@ public final class R {
         public static final int tabhost=0x7f0a0006;
         public static final int textView1=0x7f0a0008;
         public static final int textView3=0x7f0a000b;
-        public static final int txtHeader=0x7f0a000f;
+        public static final int txtHeader=0x7f0a000e;
         public static final int txtQuery=0x7f0a0012;
-        public static final int txtScan=0x7f0a0010;
+        public static final int txtScan=0x7f0a000f;
         public static final int viewPhoto=0x7f0a000d;
         public static final int viewPhotoDetails=0x7f0a000c;
     }
@@ -108,6 +108,7 @@ public final class R {
     public static final class raw {
         public static final int agenda=0x7f050000;
         public static final int people=0x7f050001;
+        public static final int profile=0x7f050002;
     }
     public static final class string {
         public static final int action_check_updates=0x7f06000b;

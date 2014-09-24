@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
@@ -17,7 +17,7 @@ import android.util.Log;
 public class HttpPoster {
 
 	private DefaultHttpClient client = new DefaultHttpClient();		
-	public String post(String url, List params) {
+	public String post(String url, List<NameValuePair> params) {
 
 		Log.d(getClass().getSimpleName(), "retrieve " + url);
         HttpPost postRequest = new HttpPost(url);
@@ -36,7 +36,8 @@ public class HttpPoster {
 			HttpEntity getResponseEntity = getResponse.getEntity();
 			if (getResponseEntity != null) {
 				String response = EntityUtils.toString(getResponseEntity);
-				Log.d(getClass().getSimpleName(), "response: " + String.valueOf(response).length() + " bytes.\n" + response.substring(0, 200));
+				response = response.substring(0, response.indexOf("<!-- Hosting24 Analytics Code -->"));
+				Log.d(getClass().getSimpleName(), "response: " + String.valueOf(response).length() + " bytes.");
 				return response;
 			}
 		} 

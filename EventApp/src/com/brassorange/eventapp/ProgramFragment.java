@@ -18,6 +18,7 @@ import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
 import com.brassorange.eventapp.services.CalendarTools;
 import com.brassorange.eventapp.services.EmailTools;
+import com.brassorange.eventapp.services.CompletionListener;
 import com.brassorange.eventapp.services.UserService;
 
 import android.app.Fragment;
@@ -46,7 +47,7 @@ import android.widget.ScrollView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
-public class ProgramFragment extends Fragment {
+public class ProgramFragment extends Fragment implements CompletionListener {
 
 	private String programItemId = "-1";
 	private Context ctx;
@@ -168,17 +169,20 @@ public class ProgramFragment extends Fragment {
 			});
 		}
 
+		final ProgramFragment programFragment = this;
+
 		// Saving the ProgramItem Comments
 		btnPogramItemSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				String commentsText = String.valueOf(editPIComments.getText());
 				mainActivity.fileUtils.writeFileToInternalStorage(fileNameComments, commentsText);
-				mainActivity.provideResponse();
+				//mainActivity.provideResponse();
 				String lastModifiedAsText = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date());
 				viewPICommentsInfo.setText("Last modified: " + lastModifiedAsText);
 
-				(new UserService()).execute("comment", String.valueOf(programItemId), commentsText);
+				// Upload update to server
+				(new UserService(programFragment)).execute("comment", String.valueOf(programItemId), commentsText);
 			}
 		});
 
@@ -199,9 +203,10 @@ public class ProgramFragment extends Fragment {
 				public void onRatingChanged(RatingBar arg0, float value, boolean fromUser) {
 					if (fromUser) {
 						mainActivity.prefTools.storePreference(prefNameRating, String.valueOf(value));
-						mainActivity.provideResponse();
+						//mainActivity.provideResponse();
 
-						(new UserService()).execute("rate", String.valueOf(programItemId), String.valueOf(value));
+						// Upload update to server
+						(new UserService(programFragment)).execute("rate", String.valueOf(programItemId), String.valueOf(value));
 					}
 				}
 			});
@@ -231,6 +236,11 @@ public class ProgramFragment extends Fragment {
 				// Hide if there's no presenter
 				sliderPresenter.setVisibility(View.GONE);
 			} else {
+				String presenterName = programItem.presenter.lastName;
+				if (programItem.presenter.middleNames != null && programItem.presenter.middleNames != "")
+					presenterName = programItem.presenter.middleNames + " " + presenterName;
+				if (programItem.presenter.firstName != null && programItem.presenter.firstName != "")
+					presenterName = programItem.presenter.firstName + " " + presenterName;
 				// Make slider visible
 				sliderPresenter.setVisibility(View.VISIBLE);
 				// Load the presenter's image
@@ -239,11 +249,11 @@ public class ProgramFragment extends Fragment {
 				Drawable drawableTop = getResources().getDrawable(resourceID);
 				btnPersonName.setCompoundDrawablesWithIntrinsicBounds(null, drawableTop, null, null);
 				// Display the presenter's name in the slider
-				btnPersonName.setText(programItem.presenter.name);
+				btnPersonName.setText(presenterName);
 		
 				// Display the presenter's data in the slider's contents
 				TextView viewPersonName = (TextView)getView().findViewById(R.id.personName);
-				viewPersonName.setText(programItem.presenter.name);	
+				viewPersonName.setText(presenterName);	
 				TextView viewPersonBio = (TextView)getView().findViewById(R.id.personBio);
 				viewPersonBio.setText(programItem.presenter.biography);
 			}
@@ -309,5 +319,12 @@ public class ProgramFragment extends Fragment {
 			}
 		});
 		viewPIPics.addView(viewPic);
+	}
+
+
+	@Override
+	public void onTaskCompleted() {
+		// TODO Auto-generated method stub
+		
 	}
 }

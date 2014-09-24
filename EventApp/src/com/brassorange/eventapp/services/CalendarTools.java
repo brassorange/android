@@ -2,7 +2,7 @@ package com.brassorange.eventapp.services;
 
 import java.util.Date;
 
-import com.brassorange.eventapp.MainActivity;
+import com.brassorange.eventapp.EventApp;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -21,7 +21,7 @@ public class CalendarTools {
 	public CalendarTools(Activity activity) {
 		this.ctx = activity.getApplicationContext();
 
-		String calendarName = ((MainActivity)activity).calendarName;
+		String calendarName = EventApp.mailAccount;
 
 		Cursor cur = null;
 		ContentResolver cr = ctx.getContentResolver();

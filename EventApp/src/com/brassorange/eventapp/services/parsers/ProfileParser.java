@@ -1,51 +1,44 @@
 package com.brassorange.eventapp.services.parsers;
 
-import java.util.ArrayList;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.brassorange.eventapp.model.Person;
+import com.brassorange.eventapp.model.Profile;
 
-public class PersonParser extends DefaultHandler {
+public class ProfileParser extends DefaultHandler {
 
 	private StringBuffer buffer = new StringBuffer();
-	private ArrayList<Person> people;
-	private Person person;
+	private Profile profile;
 	
 	@Override
 	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes atts) throws SAXException {
 		buffer.setLength(0);
-		if (localName.equals("people")) {
-			people = new ArrayList<Person>();
-		} else if (localName.equals("person")) {
-			person = new Person();
+		if (localName.equals("profile")) {
+			profile = new Profile();
 		}
 
 	}
 	
 	@Override
 	public void endElement(String uri, String localName, String qName)throws SAXException {
-		if (localName.equals("person")) {
-			people.add(person);
-		} else if (localName.equals("id")) {
-			person.id = buffer.toString();
+		if (localName.equals("id")) {
+			profile.id = buffer.toString();
 		} else if (localName.equals("firstName")) {
-			person.firstName = buffer.toString();
+			profile.firstName = buffer.toString();
 		} else if (localName.equals("middleNames")) {
-			person.middleNames = buffer.toString();
+			profile.middleNames = buffer.toString();
 		} else if (localName.equals("lastName")) {
-			person.lastName = buffer.toString();
+			profile.lastName = buffer.toString();
 		} else if (localName.equals("title")) {
-			person.title = buffer.toString();
+			profile.title = buffer.toString();
 		} else if (localName.equals("biography")) {
-			person.biography = buffer.toString();
+			profile.biography = buffer.toString();
 		} else if (localName.equals("imageName")) {
-			person.imageName = buffer.toString();
+			profile.imageName = buffer.toString();
 		} else if (localName.equals("email")) {
-			person.email = buffer.toString();
+			profile.email = buffer.toString();
 		}
 	}
 	
@@ -54,8 +47,8 @@ public class PersonParser extends DefaultHandler {
 		buffer.append(ch, start, length);
 	}
 
-	public ArrayList<Person> retrievePeople() {
-		return people;
+	public Profile retrieveProfile() {
+		return profile;
 	}
 
 }

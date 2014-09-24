@@ -3,7 +3,7 @@ package com.brassorange.eventapp;
 import android.provider.Settings.Secure;
 import java.util.TimerTask;
 
-import com.brassorange.eventapp.services.Responder;
+//import com.brassorange.eventapp.services.Responder;
 import com.brassorange.eventapp.services.Updater;
 import com.brassorange.eventapp.services.FileUtils;
 import com.brassorange.eventapp.util.PrefTools;
@@ -28,8 +28,6 @@ public class MainActivity extends Activity {
 
 	public FileUtils fileUtils;
 	public PrefTools prefTools;
-	public String mailAccount = "boris.m.georgiev@gmail.com";
-	public String calendarName = mailAccount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -159,10 +157,12 @@ notificationManager.notify(1, notification);
     	tab.performClick();
 	}
 
+	/*
 	public void provideResponse() {
 		Responder responder = new Responder(this); 
 		responder.execute();
 	}
+	*/
 
 	public class TimerUpdateChecker extends TimerTask {
 		@Override

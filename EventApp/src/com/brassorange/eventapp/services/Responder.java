@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.brassorange.eventapp.model.Program;
-
+/*
 public class Responder extends AsyncTask<String, Void, Program> {
 	private String URL_RESPOND = "http://brassorange.com/samplepages/respond.php?";
 	private Activity activity;
@@ -29,3 +29,4 @@ public class Responder extends AsyncTask<String, Void, Program> {
 		});
 	}
 }
+*/
