@@ -14,7 +14,7 @@
 		<date>22-JUL-2015 09:00</date>
 		<duration>1:40</duration>
 		<popularity>3</popularity>
-		<presenterId>1</presenterId>
+		<presenterUid>1</presenterUid>
 		<url>http://www.themoviedb.org/person/287</url>
 		<images>
 			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
@@ -36,7 +36,7 @@
 		<date>22-JUL-2015 12:00</date>
 		<duration>1:50</duration>
 		<popularity>3</popularity>
-		<presenterId>2</presenterId>
+		<presenterUid>2</presenterUid>
 		<url>http://www.themoviedb.org/person/287</url>
 		<images>
 			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
@@ -55,7 +55,7 @@
 		<date>22-JUL-2015 14:00</date>
 		<duration>1:50</duration>
 		<popularity>3</popularity>
-		<presenterId></presenterId>
+		<presenterUid></presenterUid>
 		<url>http://www.themoviedb.org/person/287</url>
 		<images>
 			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <people>
 	<person>
-		<id>1</id>
+		<uid>1</uid>
 		<firstName>Catherine</firstName>
 		<lastName>Ashton</lastName>
 		<title>EU High Representative for Foreign Affairs and Security Policy and Vice-President, European Commission</title>
@@ -10,7 +10,7 @@
 		<email>boris.m.georgiev@gmail.com</email>
 	</person>
 	<person>
-		<id>2</id>
+		<uid>2</uid>
 		<firstName>John</firstName>
 		<middleNames>R.</middleNames>
 		<lastName>Allen</lastName>

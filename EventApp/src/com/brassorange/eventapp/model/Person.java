@@ -1,7 +1,7 @@
 package com.brassorange.eventapp.model;
 
 public class Person {
-	public String id;
+	public String uid;
 	public String firstName;
 	public String middleNames;
 	public String lastName;

@@ -64,7 +64,7 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		for (int i=0; i<program.programItems.size(); i++) {
 			ProgramItem programItem = program.programItems.get(i);
 			for (int p=0; p<people.size(); p++) {
-				if (people.get(p).id.equals(programItem.presenter.id)) {
+				if (people.get(p).uid.equals(programItem.presenter.uid)) {
 					programItem.presenter = people.get(p);
 				}
 			}

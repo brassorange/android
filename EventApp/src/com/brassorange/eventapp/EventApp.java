@@ -9,6 +9,7 @@ public class EventApp extends Application {
 	public static String uid = "";
 	public static String firstName = "";
 	public static String lastName = "";
+	public static String biography = "";
 	public static String mailAccount = "boris.m.georgiev@gmail.com";
 
 	public static String urlAgenda     = "http://brassorange.com/samplepages/agenda.xml?";

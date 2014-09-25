@@ -44,9 +44,9 @@ public class ProgramParser extends DefaultHandler {
 			pi.summary = buffer.toString();
 		} else if (localName.equals("content")) {
 			pi.content = buffer.toString();
-		} else if (localName.equals("presenterId")) {
+		} else if (localName.equals("presenterUid")) {
 			Person presenter = new Person();
-			presenter.id = buffer.toString();
+			presenter.uid = buffer.toString();
 			pi.presenter = presenter;
 		} else if (localName.equals("date")) {
 			try {

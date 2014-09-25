@@ -232,7 +232,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		// Update the slider with presenter data
 		SlidingDrawer sliderPresenter = (SlidingDrawer)getView().findViewById(R.id.sliderPresenter);
 		if (sliderPresenter != null) {
-			if (programItem.presenter == null || programItem.presenter.id == "") {
+			if (programItem.presenter == null || programItem.presenter.uid == "") {
 				// Hide if there's no presenter
 				sliderPresenter.setVisibility(View.GONE);
 			} else {

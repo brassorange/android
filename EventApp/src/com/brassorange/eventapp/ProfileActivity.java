@@ -63,7 +63,7 @@ public class ProfileActivity extends Activity implements CompletionListener {
 		txtScan = (TextView)findViewById(R.id.txtScan);
 		btnScan = (Button)findViewById(R.id.btnScan);
 
-		txtScan.setText(EventApp.firstName + " --- " + EventApp.lastName);
+		onTaskCompleted();
 
 		btnScan.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -75,6 +75,7 @@ public class ProfileActivity extends Activity implements CompletionListener {
 					previewing = true;
 					mCamera.autoFocus(autoFocusCb);
 				}
+				// When ran in emulator
 				if ("sdk".equals(Build.PRODUCT)) {
 					barcodeScanned = true;
 					getProfile("9832749832");
@@ -129,8 +130,8 @@ public class ProfileActivity extends Activity implements CompletionListener {
 
 	@Override
 	public void onTaskCompleted() {
-		// TODO Auto-generated method stub
-		txtScan.setText(EventApp.firstName + " " + EventApp.lastName);
+		if (EventApp.lastName != null && EventApp.lastName != "")
+			txtScan.setText(EventApp.uid + ". " + EventApp.firstName + " " + EventApp.lastName + " --- " + EventApp.biography);
 	}
 
 }

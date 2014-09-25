@@ -30,8 +30,8 @@ public class PersonParser extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName)throws SAXException {
 		if (localName.equals("person")) {
 			people.add(person);
-		} else if (localName.equals("id")) {
-			person.id = buffer.toString();
+		} else if (localName.equals("uid")) {
+			person.uid = buffer.toString();
 		} else if (localName.equals("firstName")) {
 			person.firstName = buffer.toString();
 		} else if (localName.equals("middleNames")) {

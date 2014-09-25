@@ -33,7 +33,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		EventApp.uid = Secure.getString(this.getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+		if (EventApp.uid != null || EventApp.uid == "")
+			EventApp.uid = Secure.getString(this.getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
 
 		fileUtils = new FileUtils(getApplicationContext());
 		prefTools = new PrefTools(getApplicationContext());

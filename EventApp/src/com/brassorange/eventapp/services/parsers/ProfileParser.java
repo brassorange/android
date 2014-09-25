@@ -23,8 +23,8 @@ public class ProfileParser extends DefaultHandler {
 	
 	@Override
 	public void endElement(String uri, String localName, String qName)throws SAXException {
-		if (localName.equals("id")) {
-			profile.id = buffer.toString();
+		if (localName.equals("uid")) {
+			profile.uid = buffer.toString();
 		} else if (localName.equals("firstName")) {
 			profile.firstName = buffer.toString();
 		} else if (localName.equals("middleNames")) {

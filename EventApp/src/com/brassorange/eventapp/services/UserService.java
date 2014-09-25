@@ -15,9 +15,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.brassorange.eventapp.EventApp;
-import com.brassorange.eventapp.model.Person;
 import com.brassorange.eventapp.model.Profile;
-import com.brassorange.eventapp.model.Program;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -38,7 +36,7 @@ public class UserService extends AsyncTask<String, Void, String> {
 		actionType = arg0[0];
 
 		if (actionType.equals("profile")) {
-			params.add(new BasicNameValuePair("id", arg0[1]));
+			params.add(new BasicNameValuePair("uid", arg0[1]));
 			String response = httpPoster.post(EventApp.urlGetProfile, params);
 			return response;
 		} else {
@@ -73,8 +71,11 @@ public class UserService extends AsyncTask<String, Void, String> {
 			XmlParser xmlParser = new XmlParser();
 			Profile profile = xmlParser.parseProfileResponse(result);
 			if (profile != null) {
-				EventApp.firstName = profile.firstName;
-				EventApp.lastName = profile.lastName;
+				EventApp.uid         = profile.uid;
+				EventApp.firstName   = profile.firstName;
+				EventApp.lastName    = profile.lastName;
+				EventApp.biography   = profile.biography;
+				EventApp.mailAccount = profile.email;
 			}
 			listener.onTaskCompleted();
 		}
