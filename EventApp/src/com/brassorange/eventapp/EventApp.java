@@ -18,12 +18,4 @@ public class EventApp extends Application {
 	public static String urlPutRating  = "http://brassorange.com/ea/putRating.php";
 
 	public static Camera mCamera;
-
-	public EventApp() {
-		try {
-			mCamera = Camera.open();
-		} catch (Exception e){
-		}
-	}
-
 }
