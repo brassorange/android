@@ -12,17 +12,13 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -33,19 +29,31 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Open camera
+		try {
+			EventApp.mCamera = Camera.open();
+		} catch (Exception e) {
+			Log.e(this.getClass().getSimpleName(), "Camera can not be open");
+		}
+
+		// If not already registered on this device, auto-generate a uid based on the device id
 		if (EventApp.uid != null || EventApp.uid == "")
 			EventApp.uid = Secure.getString(this.getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
 
 		fileUtils = new FileUtils(getApplicationContext());
 		prefTools = new PrefTools(getApplicationContext());
+
 		//loadTabs();
 		load();
 
+		// Run a one-time update
+		Updater updater = new Updater(this);
+		updater.execute();
+
+		// Schedule a regular update
 		//TimerTask timerTask = new TimerUpdateChecker();
 		//Timer timer = new Timer(true);
 		//timer.scheduleAtFixedRate(timerTask, 0, 3 * 1000);
-Updater updater = new Updater(this);
-updater.execute();
 
 /*
 String notificationService = Context.NOTIFICATION_SERVICE;
@@ -104,6 +112,7 @@ notificationManager.notify(1, notification);
 		setContentView(R.layout.activity_main);
 	}
 
+	/*
 	protected void loadTabs() {
 		setContentView(R.layout.activity_main_tabs);
 
@@ -157,6 +166,7 @@ notificationManager.notify(1, notification);
     	View tab = tabHost.getTabWidget().getChildAt(1);
     	tab.performClick();
 	}
+	*/
 
 	/*
 	public void provideResponse() {
