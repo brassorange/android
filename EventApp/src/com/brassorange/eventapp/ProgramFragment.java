@@ -24,6 +24,7 @@ import com.brassorange.eventapp.services.UserService;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -241,16 +242,22 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 					presenterName = programItem.presenter.middleNames + " " + presenterName;
 				if (programItem.presenter.firstName != null && programItem.presenter.firstName != "")
 					presenterName = programItem.presenter.firstName + " " + presenterName;
+
 				// Make slider visible
 				sliderPresenter.setVisibility(View.VISIBLE);
-				// Load the presenter's image
-				Button btnPersonName = (Button)getView().findViewById(R.id.handlePerson);
-				int resourceID = ctx.getResources().getIdentifier(programItem.presenter.imageName, "drawable", ctx.getApplicationInfo().packageName);
-				Drawable drawableTop = getResources().getDrawable(resourceID);
-				btnPersonName.setCompoundDrawablesWithIntrinsicBounds(null, drawableTop, null, null);
-				// Display the presenter's name in the slider
-				btnPersonName.setText(presenterName);
-		
+
+				// Only for large screen sizes:
+				if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+						== Configuration.SCREENLAYOUT_SIZE_LARGE) {
+					// Load the presenter's name and image
+					Button btnPersonName = (Button)getView().findViewById(R.id.handlePerson);
+					int resourceID = ctx.getResources().getIdentifier(programItem.presenter.imageName, "drawable", ctx.getApplicationInfo().packageName);
+					Drawable drawableTop = getResources().getDrawable(resourceID);
+					btnPersonName.setCompoundDrawablesWithIntrinsicBounds(null, drawableTop, null, null);
+					// Display the presenter's name in the slider
+					btnPersonName.setText(presenterName);
+				}
+
 				// Display the presenter's data in the slider's contents
 				TextView viewPersonName = (TextView)getView().findViewById(R.id.personName);
 				viewPersonName.setText(presenterName);	
