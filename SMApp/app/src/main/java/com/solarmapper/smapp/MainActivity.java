@@ -3,7 +3,6 @@ package com.solarmapper.smapp;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,26 +11,59 @@ import android.widget.LinearLayout;
 import com.jjoe64.graphview.BarGraphView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
-import com.solarmapper.smapp.com.solarmapper.smapp.services.Updater;
+import com.solarmapper.smapp.services.Updater;
+import com.solarmapper.smapp.utils.PrefTools;
+
+/*
+    Check the PreferenceManager for apiKey.
+        If apiKey is set, go to the graph.
+        Else go to login activity.
+
+    Update the consumption graph:
+        MainActivity.onCreate -> Updater.doInBackground
+        -> HttpRetriever.retrieve
+        -> Updater.onPostExecute -> MainActivity.buildGraph
+
+*/
 
 public class MainActivity extends ActionBarActivity {
+    private Menu mOptionsMenu;
+    private static final int LOGIN_REQUEST = 1;
+    private PrefTools prefTools = new PrefTools(this);
+    private String apiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // MainActivity.onCreate -> Updater.doInBackground
-        //  -> HttpRetriever.retrieve
-        //  -> Updater.onPostExecute -> MainActivity.buildGraph
-
-        Updater updater = new Updater(this);
-        updater.execute();
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        apiKey = prefTools.retrievePreference("apiKey");
+        if (apiKey == null || apiKey == "") {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, LOGIN_REQUEST);
+        } else {
+            getGraphData();
+        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        // Return from Login activity
+        if (requestCode == LOGIN_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                apiKey = data.getStringExtra("apiKey");
+                prefTools.storePreference("apiKey", apiKey);
+                adjustMenu();
+                getGraphData();
+            }
+        }
+    }
+
+    public void getGraphData() {
+        Updater updater = new Updater(this);
+        updater.execute(apiKey, "20141225");
+    }
     public void buildGraph(float[] values) {
         GraphView.GraphViewData[] gvd = new GraphView.GraphViewData[24];
         for (int i=0; i<24; i++)
@@ -64,6 +96,8 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        mOptionsMenu = menu;
+        adjustMenu();
         return true;
     }
 
@@ -75,10 +109,25 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_login) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, LOGIN_REQUEST);
+        } else if (id == R.id.action_logout) {
+            prefTools.storePreference("apiKey", "");
+            LinearLayout layout = (LinearLayout)findViewById(R.id.layout);
+            layout.removeAllViews();
+            adjustMenu();
+        } else if (id == R.id.action_settings) {
+//            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private void adjustMenu() {
+        String apiKey = prefTools.retrievePreference("apiKey");
+        if (apiKey == null)
+            apiKey = "";
+        mOptionsMenu.getItem(0).setVisible(apiKey == "");
+        mOptionsMenu.getItem(1).setVisible(apiKey != "");
     }
 }

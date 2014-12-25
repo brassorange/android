@@ -3,7 +3,8 @@
 
     <string name="app_name">SMApp</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_login">Login</string>
+    <string name="action_login">Log in</string>
+    <string name="action_logout">Log out</string>
     <string name="action_settings">Settings</string>
 
 </resources>

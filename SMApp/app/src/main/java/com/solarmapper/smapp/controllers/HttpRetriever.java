@@ -1,4 +1,4 @@
-package com.solarmapper.smapp.com.solarmapper.smapp.controllers;
+package com.solarmapper.smapp.controllers;
 
 import java.io.IOException;
 
