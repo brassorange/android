@@ -8,17 +8,31 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="30dp"
-        android:minWidth="50dp"
+        android:background="@drawable/ic_arrow_l"
         android:id="@+id/imageButtonBack" />
+
+    <Spinner
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageButtonBack"
+        android:id="@+id/spinnerPeriod"
+        android:paddingLeft="30dp" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="30dp"
-        android:minWidth="50dp"
-        android:layout_toRightOf="@id/imageButtonBack"
+        android:layout_toRightOf="@id/spinnerPeriod"
+        android:background="@drawable/ic_arrow_r"
         android:id="@+id/imageButtonFwd" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageButtonFwd"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textTotalKwh"
+        android:paddingLeft="50dp"
+        android:paddingTop="10dp" />
 
     <LinearLayout
         android:id="@+id/layout"

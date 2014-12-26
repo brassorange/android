@@ -23,12 +23,21 @@ public class Updater extends AsyncTask<String, Void, float[]> {
     protected float[] doInBackground(String... params) {
         HttpRetriever httpRetriever = new HttpRetriever();
         Log.d(this.getClass().getSimpleName(), "update from http ...");
-        String result = httpRetriever.retrieve("http://solarmapper.com/api/v1/cons?apiKey=" + params[0] + "&id=1&date=" + params[1]);
-        float[] values = new float[24];
+        String result = httpRetriever.retrieve("http://solarmapper.com/api/v1/cons?apiKey=" + params[0] + "&id=1&date=" + params[1] + "&mode=" + params[2]);
+        float[] values = new float[0];
         try {
             JSONObject jObject = new JSONObject(result);
-            for (int h=0; h<24; h++)
-                values[h] = new Float(jObject.getString("H" + String.valueOf(h))).floatValue();
+            int mode = new Integer(params[2]).intValue();
+            int[] arrSizes = new int[]{24, 7, 31, 12};
+            String[] prefixes = new String[]{"H", "DW", "D", "M"};
+            values = new float[arrSizes[mode]];
+            for (int i = 0; i < values.length; i++) {
+                values[i] = 0;
+                String idx = prefixes[mode] + String.valueOf(i);
+                Log.d("", "idx=" + idx + ", " + jObject.has(idx));
+                if (jObject.has(idx))
+                    values[i] = new Float(jObject.getString(idx)).floatValue();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

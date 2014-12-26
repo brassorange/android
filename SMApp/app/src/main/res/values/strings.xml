@@ -7,4 +7,11 @@
     <string name="action_logout">Log out</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="periods_array">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
+    </string-array>
+
 </resources>
