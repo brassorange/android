@@ -1,7 +1,7 @@
 package com.solarmapper.smapp;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +33,7 @@ import java.util.Calendar;
 
 */
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     private Menu mOptionsMenu;
     private static final int LOGIN_REQUEST = 1;
     private PrefTools prefTools = new PrefTools(this);
