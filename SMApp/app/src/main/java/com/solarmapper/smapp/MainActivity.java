@@ -20,7 +20,6 @@ import com.solarmapper.smapp.utils.PrefTools;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /*
     Check the PreferenceManager for apiKey.
@@ -98,10 +97,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void buildGraph(float[] values) {
         GraphView.GraphViewData[] gvd = new GraphView.GraphViewData[24];
-        for (int i=0; i<24; i++) {
-            Log.d("", String.valueOf(values[i]));
+        for (int i=0; i<24; i++)
             gvd[i] = new GraphView.GraphViewData(i, values[i]);
-        }
         GraphViewSeries dataSeries = new GraphViewSeries(gvd);
         GraphView graphView = new BarGraphView(this, "");
         graphView.addSeries(dataSeries); // data
@@ -116,10 +113,12 @@ public class MainActivity extends ActionBarActivity {
         }
         graphView.setHorizontalLabels(labels);
         // Vertical labels
+        graphView.setManualYMinBound(0);
         graphView.setManualYMaxBound(1000);
         graphView.setVerticalLabels(new String[]{"1000", "500", "0"});
         // Title
-        graphView.setTitle("Daily consumption");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        graphView.setTitle("Daily consumption " + df.format(calDate.getTime()));
 
         LinearLayout layout = (LinearLayout)findViewById(R.id.layout);
         layout.removeAllViews();
