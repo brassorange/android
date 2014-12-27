@@ -3,23 +3,19 @@ package com.brassorange.eventapp;
 import java.util.TimerTask;
 
 import com.brassorange.eventapp.services.CompletionListener;
-//import com.brassorange.eventapp.services.Responder;
 import com.brassorange.eventapp.services.Updater;
 import com.brassorange.eventapp.services.FileUtils;
 import com.brassorange.eventapp.util.PrefTools;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
 
-public class MainActivity extends Activity implements CompletionListener {
+public class MainActivity extends ActionBarActivity implements CompletionListener {
 
 	public FileUtils fileUtils;
 	public PrefTools prefTools;
@@ -29,6 +25,8 @@ public class MainActivity extends Activity implements CompletionListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+        Log.d(this.getClass().getSimpleName(), "onCreate");
 
 		/*
 		// If not already registered on this device, auto-generate a uid based on the device id
@@ -69,9 +67,10 @@ notificationManager.notify(1, notification);
 		inflater.inflate(R.menu.activity_main_actions, menu);
  
 		// Associate searchable configuration with the SearchView
-		SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//		SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+//		SearchView searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
+//		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        menu.findItem(R.id.action_search).getActionView();
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -82,6 +81,7 @@ notificationManager.notify(1, notification);
 		switch (item.getItemId()) {
 			case R.id.action_search:
 				// search action
+                Log.d(this.getClass().getSimpleName(), "onOptionsItemSelected -> R.id.action_search");
 				return true;
 			case R.id.action_refresh:
 				Updater updater = new Updater(this);
