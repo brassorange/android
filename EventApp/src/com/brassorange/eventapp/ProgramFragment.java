@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,8 +51,8 @@ import android.widget.TextView;
 
 public class ProgramFragment extends Fragment implements CompletionListener {
 
+	private EventApp eventApp;
 	private String programItemId = "-1";
-	private Context ctx;
 	private CalendarTools calendarTools;
 	private EmailTools emailTools;
 	private String tmplCmtName = "cmt-{0}.txt";
@@ -61,8 +62,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_program, container, false);
-
-		ctx = getActivity().getApplicationContext();
+		eventApp = (EventApp)this.getActivity().getApplication();
 		calendarTools = new CalendarTools(getActivity());
 		emailTools = new EmailTools(getActivity());
 
@@ -76,10 +76,11 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 
 		programItemId = programItem.id;
 
-		TextView viewPISummary = (TextView)getView().findViewById(R.id.programItemSummary);
+		TextView viewPITitle = (TextView)getView().findViewById(R.id.programItemTitle);
+		//TextView viewPISummary = (TextView)getView().findViewById(R.id.programItemSummary);
+		TextView viewPIContent = (TextView)getView().findViewById(R.id.programItemContent);
 		ScrollView scrollPI = (ScrollView)getView().findViewById(R.id.programItemScroll);
 		LinearLayout viewPI = (LinearLayout)getView().findViewById(R.id.programItem);
-		TextView viewPIDesc = (TextView)getView().findViewById(R.id.programItemDesc);
 		final EditText editPIComments = (EditText)getView().findViewById(R.id.programItemComments);
 		ImageButton btnPogramItemCal = (ImageButton)getView().findViewById(R.id.programItemCal);
 		ImageButton btnPogramItemMail = (ImageButton)getView().findViewById(R.id.programItemMail);
@@ -90,19 +91,20 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 
 		// Adjust the ProgramItem width
 		int availableWidth = getView().getWidth() - 440;
-		viewPISummary.setWidth(availableWidth);
+		viewPITitle.setWidth(availableWidth);
 		scrollPI.setMinimumWidth(availableWidth);
 		viewPI.setMinimumWidth(availableWidth);
 
 		// Originally created invisible, make sure the ProgramItem fields become visible
-		viewPISummary.setVisibility(View.VISIBLE);
+		viewPITitle.setVisibility(View.VISIBLE);
 		scrollPI.setVisibility(View.VISIBLE);
 		if (ratingPI != null)
 			ratingPI.setVisibility(View.VISIBLE);
 
 		// Display the ProgramItem text contents
-		viewPISummary.setText(programItem.summary);
-		viewPIDesc.setText(programItem.content);
+		viewPITitle.setText(programItem.title);
+		//viewPISummary.setText(programItem.summary);
+		viewPIContent.setText(programItem.content);
 
 		// Display the user-controlled contents:
 		// Comments
@@ -157,17 +159,19 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		}
 
 		// Sending e-mail
-		String emailPresenter = programItem.presenter.email;
-		if (emailPresenter == null || emailPresenter == "") {
-			btnPogramItemMail.setVisibility(View.INVISIBLE);
-		} else {
-			btnPogramItemMail.setVisibility(View.VISIBLE);
-			btnPogramItemMail.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					emailTools.sendMail(programItem.title, programItem.summary, programItem.presenter.email);
-				}
-			});
+		if (programItem.presenter != null) {
+			String emailPresenter = programItem.presenter.email;
+			if (emailPresenter == null || emailPresenter == "") {
+				btnPogramItemMail.setVisibility(View.INVISIBLE);
+			} else {
+				btnPogramItemMail.setVisibility(View.VISIBLE);
+				btnPogramItemMail.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						emailTools.sendMail(programItem.title, programItem.summary, programItem.presenter.email);
+					}
+				});
+			}
 		}
 
 		final ProgramFragment programFragment = this;
@@ -176,14 +180,18 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		btnPogramItemSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				String commentsText = String.valueOf(editPIComments.getText());
-				mainActivity.fileUtils.writeFileToInternalStorage(fileNameComments, commentsText);
-				//mainActivity.provideResponse();
-				String lastModifiedAsText = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date());
-				viewPICommentsInfo.setText("Last modified: " + lastModifiedAsText);
-
-				// Upload update to server
-				(new UserService(programFragment)).execute("comment", String.valueOf(programItemId), commentsText);
+				// User must be logged in to be allowed to comment.
+				if (!eventApp.allowAnonymousComments && eventApp.checkLoginStatus()) {
+					String commentsText = String.valueOf(editPIComments.getText());
+					mainActivity.fileUtils.writeFileToInternalStorage(fileNameComments, commentsText);
+					//mainActivity.provideResponse();
+					String lastModifiedAsText = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date());
+					viewPICommentsInfo.setText("Last modified: " + lastModifiedAsText);
+	
+					// Upload update to server
+					Log.d(this.getClass().getSimpleName(), "UserService -> Comment " + eventApp.getMailAccount());
+					(new UserService(eventApp, programFragment)).execute("comment", String.valueOf(programItemId), commentsText);
+				}
 			}
 		});
 
@@ -202,12 +210,16 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 			ratingPI.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 				@Override
 				public void onRatingChanged(RatingBar arg0, float value, boolean fromUser) {
-					if (fromUser) {
+					if (!fromUser)
+						return;
+
+					// User must be logged in to be allowed to rate.
+					if (!eventApp.allowAnonymousRatings && eventApp.checkLoginStatus()) {
 						mainActivity.prefTools.storePreference(prefNameRating, String.valueOf(value));
-						//mainActivity.provideResponse();
 
 						// Upload update to server
-						(new UserService(programFragment)).execute("rate", String.valueOf(programItemId), String.valueOf(value));
+						Log.d(this.getClass().getSimpleName(), "UserService -> Rate " + eventApp.getMailAccount());
+						(new UserService(eventApp, programFragment)).execute("rate", String.valueOf(programItemId), String.valueOf(value));
 					}
 				}
 			});
@@ -251,7 +263,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 						== Configuration.SCREENLAYOUT_SIZE_LARGE) {
 					// Load the presenter's name and image
 					Button btnPersonName = (Button)getView().findViewById(R.id.handlePerson);
-					int resourceID = ctx.getResources().getIdentifier(programItem.presenter.imageName, "drawable", ctx.getApplicationInfo().packageName);
+					int resourceID = eventApp.getApplicationContext().getResources().getIdentifier(programItem.presenter.imageName, "drawable", eventApp.getApplicationContext().getApplicationInfo().packageName);
 					Drawable drawableTop = getResources().getDrawable(resourceID);
 					btnPersonName.setCompoundDrawablesWithIntrinsicBounds(null, drawableTop, null, null);
 					// Display the presenter's name in the slider
@@ -303,6 +315,9 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		}
 		((MainActivity)getActivity()).fileUtils.writeImageToInternalStorage(newFileName, bm);
 		addImageToList(newFileName, bm);
+
+		// TODO: Send to cloud
+		Log.d(this.getClass().getSimpleName(), "UserService -> Photo " + eventApp.getMailAccount());
 	}
 
 	public void addImageToList(final String fileName, Bitmap bm) {

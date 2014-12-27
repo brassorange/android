@@ -15,7 +15,7 @@ import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
 
 /*
- * Takes care about the vertical list of program items
+ * Takes care about the vertical list of program items on the home page
  */
 
 public class AgendaAdapter extends ArrayAdapter<ProgramItem> {
@@ -43,11 +43,12 @@ public class AgendaAdapter extends ArrayAdapter<ProgramItem> {
 			imageAgendaItem.setImageDrawable(drawable);
 		}
 
-		TextView textAgendaItemName = (TextView)rowView.findViewById(R.id.agendaItemName);
-		textAgendaItemName.setText(program.programItems.get(position).title);
+		TextView textAgendaItemTitle = (TextView)rowView.findViewById(R.id.agendaItemTitle);
+		textAgendaItemTitle.setText(program.programItems.get(position).title);
 
-		TextView textAgendaItemDate = (TextView)rowView.findViewById(R.id.agendaItemDate);
-		textAgendaItemDate.setText(program.programItems.get(position).date.toLocaleString());
+		TextView textAgendaItemSummary = (TextView)rowView.findViewById(R.id.agendaItemSummary);
+		if (program.programItems.get(position).summary != null)
+			textAgendaItemSummary.setText(program.programItems.get(position).summary);
 
 	    // change the icon for Windows and iPhone
 	/*

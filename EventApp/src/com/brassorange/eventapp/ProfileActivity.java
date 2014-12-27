@@ -9,12 +9,12 @@ import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.Size;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +34,8 @@ public class ProfileActivity extends Activity implements CompletionListener {
 
 	TextView txtScan;
 	Button btnScan;
+	LinearLayout cameraWindow;
+	GridLayout profileData;
 
 	ImageScanner scanner;
 
@@ -49,24 +51,33 @@ public class ProfileActivity extends Activity implements CompletionListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 
-		final EventApp eventApp = (EventApp)getApplicationContext();
-		mCamera = eventApp.mCamera;
-
+		mCamera = getCameraInstance();
+		mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCb);
 		autoFocusHandler = new Handler();
+
 		// Instance barcode scanner
 		scanner = new ImageScanner();
 		scanner.setConfig(0, Config.X_DENSITY, 3);
 		scanner.setConfig(0, Config.Y_DENSITY, 3);
-		mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCb);
-		LinearLayout preview = (LinearLayout)findViewById(R.id.cameraPreview);
-		preview.addView(mPreview);
+		cameraWindow = (LinearLayout)findViewById(R.id.cameraWindow);
+		cameraWindow.addView(mPreview);
 		txtScan = (TextView)findViewById(R.id.txtScan);
 		btnScan = (Button)findViewById(R.id.btnScan);
+		profileData = (GridLayout)findViewById(R.id.profileData);
+
+		txtScan.setText("onCreate");
 
 		onTaskCompleted();
 
+		final EventApp eventApp = ((EventApp)this.getApplication());
+
 		btnScan.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				// When ran in emulator
+				if (eventApp.isRanInEmulator()) {
+					getProfile(eventApp.uidInEmulator);
+					return;
+				}
 				if (barcodeScanned) {
 					barcodeScanned = false;
 					txtScan.setText("Scanning...");
@@ -75,15 +86,33 @@ public class ProfileActivity extends Activity implements CompletionListener {
 					previewing = true;
 					mCamera.autoFocus(autoFocusCb);
 				}
-				// When ran in emulator
-				if ("sdk".equals(Build.PRODUCT)) {
-					barcodeScanned = true;
-					getProfile("9832749832");
-					return;
-				}
 			}
 		});
 	}
+
+    public void onPause() {
+        super.onPause();
+        releaseCamera();
+    }
+
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open();
+        } catch (Exception e){
+        }
+        return c;
+    }
+
+    private void releaseCamera() {
+        if (mCamera != null) {
+            previewing = false;
+            mCamera.setPreviewCallback(null);
+            mCamera.release();
+            mCamera = null;
+        }
+    }
 
 	private Runnable doAutoFocus = new Runnable() {
 		public void run() {
@@ -124,14 +153,24 @@ public class ProfileActivity extends Activity implements CompletionListener {
 
 	private void getProfile(String profileId) {
 //		txtScan.setText("getProfile " + profileId);
-		UserService us = new UserService(this);
+		UserService us = new UserService(this.getApplication(), this);
 		us.execute("profile", profileId);
 	}
 
 	@Override
 	public void onTaskCompleted() {
-		if (EventApp.lastName != null && EventApp.lastName != "")
-			txtScan.setText(EventApp.uid + ". " + EventApp.firstName + " " + EventApp.lastName + " --- " + EventApp.biography);
+		String uid = ((EventApp)this.getApplication()).getUid();
+		String firstName = ((EventApp)this.getApplication()).getFirstName();
+		String lastName = ((EventApp)this.getApplication()).getLastName();
+		String biography = ((EventApp)this.getApplication()).getBiography();
+		String email = ((EventApp)this.getApplication()).getMailAccount();
+		if (lastName != null && lastName != "") {
+			txtScan.setText(uid + ". " + firstName + " " + lastName + " --- " + biography);
+			cameraWindow.setVisibility(View.GONE);
+			profileData.setVisibility(View.VISIBLE);
+			((TextView)findViewById(R.id.txtName)).setText(firstName);
+			((TextView)findViewById(R.id.txtEmail)).setText(email);
+		}
 	}
 
 }

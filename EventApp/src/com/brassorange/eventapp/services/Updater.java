@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.brassorange.eventapp.AgendaFragment;
 import com.brassorange.eventapp.EventApp;
@@ -48,9 +49,13 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		}
 
 		// Get from HTTP
-        if (programXml == "") {
+        if (programXml == "" || (params.length > 0 && params[0] == "http")) {
 	        HttpRetriever httpRetriever = new HttpRetriever();
-	        programXml = httpRetriever.retrieve(EventApp.urlAgenda);
+	        Log.d(this.getClass().getSimpleName(), "update from http ...");
+	        String programXmlHttp = httpRetriever.retrieve(((EventApp)activity.getApplication()).getUrlAgenda());
+	        Log.d(this.getClass().getSimpleName(), "update from http done");
+	        if (programXmlHttp != null && programXmlHttp != "")
+	        	programXml = programXmlHttp;
         }
 
         FileUtils fileUtils = new FileUtils(activity.getApplicationContext());
@@ -60,12 +65,16 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		XmlParser xmlParser = new XmlParser();
 		Program program = xmlParser.parseProgramResponse(programXml);
 		ArrayList<Person> people = xmlParser.parsePeopleResponse(peopleXml);
-		// Attach presenters to program items 
-		for (int i=0; i<program.programItems.size(); i++) {
-			ProgramItem programItem = program.programItems.get(i);
-			for (int p=0; p<people.size(); p++) {
-				if (people.get(p).uid.equals(programItem.presenter.uid)) {
-					programItem.presenter = people.get(p);
+		// Attach presenters to program items
+		if (program.programItems != null) {
+			for (int i=0; i<program.programItems.size(); i++) {
+				ProgramItem programItem = program.programItems.get(i);
+				if (programItem.presenter != null) {
+					for (int p=0; p<people.size(); p++) {
+						if (people.get(p).uid.equals(programItem.presenter.uid)) {
+							programItem.presenter = people.get(p);
+						}
+					}
 				}
 			}
 		}
@@ -84,6 +93,7 @@ public class Updater extends AsyncTask<String, Void, Program> {
 				AgendaFragment agendaFragment = (AgendaFragment)activity.getFragmentManager().findFragmentById(R.id.fragAgenda);
 				if (agendaFragment != null && program != null)
 					agendaFragment.updateProgram(program);
+		    	((CompletionListener)activity).onTaskCompleted();
 	    	}
 		});
 	}

@@ -1,8 +1,8 @@
 package com.brassorange.eventapp;
 
-import android.provider.Settings.Secure;
 import java.util.TimerTask;
 
+import com.brassorange.eventapp.services.CompletionListener;
 //import com.brassorange.eventapp.services.Responder;
 import com.brassorange.eventapp.services.Updater;
 import com.brassorange.eventapp.services.FileUtils;
@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,33 +19,30 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements CompletionListener {
 
 	public FileUtils fileUtils;
 	public PrefTools prefTools;
+	private boolean isHttpSynched;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-		// Open camera
-		try {
-			EventApp.mCamera = Camera.open();
-		} catch (Exception e) {
-			Log.e(this.getClass().getSimpleName(), "Camera can not be open");
-		}
-
+		/*
 		// If not already registered on this device, auto-generate a uid based on the device id
-		if (EventApp.uid != null || EventApp.uid == "")
-			EventApp.uid = Secure.getString(this.getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+		String uid = ((EventApp)this.getApplication()).getUid();
+		if (uid != null || uid == "") {
+			uid = Secure.getString(this.getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+			((EventApp)this.getApplication()).setUid(uid);
+		}
+		*/
 
 		fileUtils = new FileUtils(getApplicationContext());
 		prefTools = new PrefTools(getApplicationContext());
 
-		//loadTabs();
-		load();
-
-		// Run a one-time update
+		// Run a one-time update - at first from local file, then from http 
 		Updater updater = new Updater(this);
 		updater.execute();
 
@@ -88,7 +84,8 @@ notificationManager.notify(1, notification);
 				// search action
 				return true;
 			case R.id.action_refresh:
-				// refresh
+				Updater updater = new Updater(this);
+				updater.execute("http");
 				return true;
 			case R.id.action_profile:
 				Intent intent = new Intent(this, ProfileActivity.class);
@@ -107,66 +104,6 @@ notificationManager.notify(1, notification);
 				return super.onOptionsItemSelected(item);
 		}
 	}
-
-	protected void load() {
-		setContentView(R.layout.activity_main);
-	}
-
-	/*
-	protected void loadTabs() {
-		setContentView(R.layout.activity_main_tabs);
-
-		// Arrange tab menu
-		final TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
-	    tabHost.setup();
-	  
-	    TabSpec spec1 = tabHost.newTabSpec("Intro");
-		spec1.setContent(R.id.tab1);
-		spec1.setIndicator("Intro");
-		tabHost.addTab(spec1);
-		
-		TabSpec spec2 = tabHost.newTabSpec("Program");
-		spec2.setIndicator("Program");
-		spec2.setContent(R.id.tab2);
-		tabHost.addTab(spec2);
-		
-		TabSpec spec3 = tabHost.newTabSpec("Personal");
-		spec3.setContent(R.id.tab3);
-		spec3.setIndicator("Personal");
-		tabHost.addTab(spec3);
-
-		// Set the tab menu look and feel
-		for (int i=0; i<tabHost.getTabWidget().getChildCount(); i++) {
-			View tab = tabHost.getTabWidget().getChildAt(i);
-			TextView tabTv = (TextView)tab.findViewById(android.R.id.title);
-			tabTv.setTextColor(Color.rgb(128, 128, 0));
-			tabTv.setTextSize(20);
-		}
-
-        // Listen for tab item clicks
-        tabHost.setOnTabChangedListener(new OnTabChangeListener() {
-			@Override
-			public void onTabChanged(String arg0) {
-				// Set the layout for unselected tabs
-		        for (int i=0; i<tabHost.getTabWidget().getChildCount(); i++) {
-			        View tab = tabHost.getTabWidget().getChildAt(i);
-			        tab.setBackgroundResource(R.drawable.tabwidget_unselected);
-		        	TextView tabTv = (TextView)tab.findViewById(android.R.id.title);
-		        	tabTv.setTextSize(20);
-		        }
-				// Set the layout for the selected tab
-		        View tab = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
-		        tab.setBackgroundResource(R.drawable.tabwidget_selected);
-		        TextView tabTv = (TextView)tab.findViewById(android.R.id.title);
-		        tabTv.setTextSize(24);
-			}
-        });
-
-        // Go to tab at position 1
-    	View tab = tabHost.getTabWidget().getChildAt(1);
-    	tab.performClick();
-	}
-	*/
 
 	/*
 	public void provideResponse() {
@@ -189,6 +126,17 @@ notificationManager.notify(1, notification);
 			        //updater.execute();
 				}
 			});
+		}
+	}
+
+	@Override
+	public void onTaskCompleted() {
+		Log.d(this.getClass().getSimpleName(), "onTaskCompleted " + isHttpSynched);
+		if (!isHttpSynched) {
+			// It is now synched from file, now do a synch from http
+			isHttpSynched = true;
+			Updater updater = new Updater(this);
+//			updater.execute("http");
 		}
 	}
 }

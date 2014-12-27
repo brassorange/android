@@ -21,7 +21,7 @@ public class CalendarTools {
 	public CalendarTools(Activity activity) {
 		this.ctx = activity.getApplicationContext();
 
-		String calendarName = EventApp.mailAccount;
+		String calendarName = ((EventApp)activity.getApplication()).getMailAccount();
 
 		Cursor cur = null;
 		ContentResolver cr = ctx.getContentResolver();

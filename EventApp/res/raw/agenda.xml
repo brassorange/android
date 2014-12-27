@@ -51,7 +51,8 @@
 		<title>Can Europe Grow Again?</title>
 		<summary>Can Europe Grow Again?</summary>
 		<content>
-		The economic situation in Europe remains frail. In 2013, overall growth in the European Union was stagnant. There were positive signs in the second half of the year as the eurozone finally emerged from its long recession, but growth numbers have varied significantly across member states, and questions regarding the sustainability of the economic recovery, particularly in the EU’s periphery, persist. Sovereign debt and unemployment levels remain high and questions about the state of Europe’s banks ahead of this summer’s stress test are adding further worries. In many countries, significant reform packages are being discussed and some implemented. But many of these reforms may only deliver economic gains in the long-term, if at all. Some core countries, like Germany, have seen solid economic performances, but can they function as growth engines for the rest of Europe? In light of these developments, this session will assess the current state of Europe’s economic recovery.		</content>
+		The economic situation in Europe remains frail. In 2013, overall growth in the European Union was stagnant. There were positive signs in the second half of the year as the eurozone finally emerged from its long recession, but growth numbers have varied significantly across member states, and questions regarding the sustainability of the economic recovery, particularly in the EU’s periphery, persist. Sovereign debt and unemployment levels remain high and questions about the state of Europe’s banks ahead of this summer’s stress test are adding further worries. In many countries, significant reform packages are being discussed and some implemented. But many of these reforms may only deliver economic gains in the long-term, if at all. Some core countries, like Germany, have seen solid economic performances, but can they function as growth engines for the rest of Europe? In light of these developments, this session will assess the current state of Europe’s economic recovery.
+		</content>
 		<date>22-JUL-2015 14:00</date>
 		<duration>1:50</duration>
 		<popularity>3</popularity>
@@ -65,4 +66,125 @@
 		<location>Hall 92</location>
 		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
 	</event>
+	<event>
+		<id>4</id>
+		<title>Title 4</title>
+		<summary>Summary 4</summary>
+		<content>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</content>
+		<date>22-JUL-2015 09:00</date>
+		<duration>1:40</duration>
+		<popularity>3</popularity>
+		<presenterUid>4</presenterUid>
+		<url>http://www.themoviedb.org/person/287</url>
+		<images>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-profile.jpg" size="profile" width="185" height="281" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-thumb.jpg" size="thumb" width="45" height="68" id="4bc977ad017a3c182400000e"/>
+		</images>
+		<location>Hall 92</location>
+		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
+	</event>
+	<event>
+		<id>5</id>
+		<title>Title 5</title>
+		<summary>Summary 5</summary>
+		<content>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</content>
+		<date>22-JUL-2015 09:00</date>
+		<duration>1:40</duration>
+		<popularity>3</popularity>
+		<presenterUid>4</presenterUid>
+		<url>http://www.themoviedb.org/person/287</url>
+		<images>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-profile.jpg" size="profile" width="185" height="281" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-thumb.jpg" size="thumb" width="45" height="68" id="4bc977ad017a3c182400000e"/>
+		</images>
+		<location>Hall 92</location>
+		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
+	</event>
+	<event>
+		<id>6</id>
+		<title>Title 6</title>
+		<summary>Summary 6</summary>
+		<content>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</content>
+		<date>22-JUL-2015 09:00</date>
+		<duration>1:40</duration>
+		<popularity>3</popularity>
+		<presenterUid>4</presenterUid>
+		<url>http://www.themoviedb.org/person/287</url>
+		<images>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-profile.jpg" size="profile" width="185" height="281" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-thumb.jpg" size="thumb" width="45" height="68" id="4bc977ad017a3c182400000e"/>
+		</images>
+		<location>Hall 92</location>
+		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
+	</event>
+	<event>
+		<id>7</id>
+		<title>Title 7</title>
+		<summary>Summary 7</summary>
+		<content>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</content>
+		<date>22-JUL-2015 09:00</date>
+		<duration>1:40</duration>
+		<popularity>3</popularity>
+		<presenterUid>4</presenterUid>
+		<url>http://www.themoviedb.org/person/287</url>
+		<images>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-profile.jpg" size="profile" width="185" height="281" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-thumb.jpg" size="thumb" width="45" height="68" id="4bc977ad017a3c182400000e"/>
+		</images>
+		<location>Hall 92</location>
+		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
+	</event>
+	<event>
+		<id>8</id>
+		<title>Title 8</title>
+		<summary>Summary 8</summary>
+		<content>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</content>
+		<date>22-JUL-2015 09:00</date>
+		<duration>1:40</duration>
+		<popularity>3</popularity>
+		<presenterUid>4</presenterUid>
+		<url>http://www.themoviedb.org/person/287</url>
+		<images>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-profile.jpg" size="profile" width="185" height="281" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-thumb.jpg" size="thumb" width="45" height="68" id="4bc977ad017a3c182400000e"/>
+		</images>
+		<location>Hall 92</location>
+		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
+	</event>
+	<event>
+		<id>9</id>
+		<title>Title 9</title>
+		<summary>Summary 9</summary>
+		<content>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</content>
+		<date>22-JUL-2015 09:00</date>
+		<duration>1:40</duration>
+		<popularity>3</popularity>
+		<presenterUid>4</presenterUid>
+		<url>http://www.themoviedb.org/person/287</url>
+		<images>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-original.jpg" size="original" width="1295" height="1969" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-profile.jpg" size="profile" width="185" height="281" id="4bc977ad017a3c182400000e"/>
+			<image type="profile" url="http://hwcdn.themoviedb.org/profiles/00e/4bc977ad017a3c182400000e/brad-pitt-thumb.jpg" size="thumb" width="45" height="68" id="4bc977ad017a3c182400000e"/>
+		</images>
+		<location>Hall 92</location>
+		<last_modified_at>2010-10-24 10:22:10</last_modified_at>
+	</event>
+
 </agenda>

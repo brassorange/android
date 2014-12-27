@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 import android.util.Log;
 
 public class HttpPoster {
+	private static final String strDeleteSuffix = "<!-- Hosting24 Analytics Code -->";
 
 	private DefaultHttpClient client = new DefaultHttpClient();		
 	public String post(String url, List<NameValuePair> params) {
@@ -36,7 +37,8 @@ public class HttpPoster {
 			HttpEntity getResponseEntity = getResponse.getEntity();
 			if (getResponseEntity != null) {
 				String response = EntityUtils.toString(getResponseEntity);
-				response = response.substring(0, response.indexOf("<!-- Hosting24 Analytics Code -->"));
+				if (response.contains(strDeleteSuffix))
+					response = response.substring(0, response.indexOf(strDeleteSuffix));
 				Log.d(getClass().getSimpleName(), "response: " + String.valueOf(response).length() + " bytes.");
 				return response;
 			}

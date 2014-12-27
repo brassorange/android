@@ -35,7 +35,7 @@ public class EmailTools {
 
 	public EmailTools(final Activity activity) {
 		this.activity = activity;
-		mailAccount = EventApp.mailAccount;
+		mailAccount = ((EventApp)activity.getApplication()).getMailAccount();
 
 		final String SCOPE = "https://mail.google.com/";
 

@@ -67,17 +67,16 @@
 				<!-- Header above the program item description. E.g. "NATO in Transition" -->
 
 				<TextView
-				    android:id="@+id/programItemSummary"
+				    android:id="@+id/programItemTitle"
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"
-				    android:text="Nato in transition"
 				    android:textSize="18sp"
 				    android:textStyle="bold"
 				    android:visibility="visible" />
 
 				<!-- Body of the program item description. E.g. "Since NATO's founding 65 years ago ..." -->
 				<TextView
-					android:id="@+id/programItemDesc"
+					android:id="@+id/programItemContent"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:layout_marginBottom="15dp"

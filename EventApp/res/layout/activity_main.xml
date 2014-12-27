@@ -17,7 +17,6 @@
 		android:id="@+id/fragAgenda"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_marginTop="30dp"
 		android:layout_below="@+id/imageLogo"
 		class="com.brassorange.eventapp.AgendaFragment" />
 
@@ -43,7 +42,7 @@
 		android:id="@+id/slidingDrawerProgram"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:content="@+id/content"
+		android:content="@+id/contentSlider"
 		android:handle="@+id/handleProgram"
 		android:orientation="horizontal" >
 		<Button
@@ -52,7 +51,7 @@
 			android:layout_height="wrap_content"
 			android:drawableTop="@drawable/ic_navigation_drawer" />
 		<LinearLayout
-			android:id="@+id/content"
+			android:id="@+id/contentSlider"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent" >
 			<fragment
@@ -63,5 +62,25 @@
 				class="com.brassorange.eventapp.ProgramFragment" />
 		</LinearLayout>
 	</SlidingDrawer>
+
+	<RelativeLayout
+	    android:id="@+id/overlay"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:visibility="visible"
+	    android:alpha="0.5">
+
+		<TextView
+		    android:id="@+id/ovlTitle"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    android:layout_marginLeft="20dp"
+		    android:layout_marginTop="20dp"
+		    android:textSize="20sp"
+		    android:textColor="#000000"
+		    android:text="8734638478" />
+    </RelativeLayout>
 
 </RelativeLayout>

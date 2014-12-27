@@ -1,107 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/fragPrgBase"
-	android:background="#C0C0C0"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/fragPrgLayout"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical" >
-
-	<ListView
-		android:id="@+id/listProgramItems"
-		android:layout_width="match_parent"
-		android:layout_height="200dp"
-		android:layout_marginRight="30dp"
-		android:choiceMode="singleChoice" />
+	android:layout_height="match_parent">
 
 	<LinearLayout
+		android:id="@+id/fragPrgBase"
 		android:background="#C0C0C0"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal" >
-
-		<ImageButton
-			android:id="@+id/programItemCal"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_calendar"
-			android:contentDescription="@string/save_comments" />
-
-		<ImageButton
-			android:id="@+id/programItemMail"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_email"
-			android:contentDescription="@string/save_comments" />
-
-		<TextView
-			android:id="@+id/programItemSummary"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:visibility="invisible"
-			android:padding="10dp"
-			android:layout_gravity="left|top"
-			android:textStyle="bold"
-			android:textSize="18sp" />
-
-	</LinearLayout>
-
-	<ScrollView
-		android:id="@+id/programItemScroll"
-		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:visibility="invisible"
-		android:padding="10dp" >
-		<LinearLayout
-			android:id="@+id/programItem"
+		android:orientation="vertical" >
+	
+		<ListView
+			android:id="@+id/listProgramItems"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical" >
-			<TextView
-				android:id="@+id/programItemDesc"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="15dp"
-				android:textSize="14sp"
-				android:textIsSelectable="false" />
-			<LinearLayout
+			android:layout_height="200dp"
+			android:layout_marginRight="30dp"
+			android:choiceMode="singleChoice" />
+	
+		<RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:background="#C0C0C0"
+		    android:orientation="vertical" >
+	
+			<ImageButton
+				android:id="@+id/programItemCal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal" >
-				<ImageButton
-					android:id="@+id/programItemSave"
-					android:layout_width="wrap_content"
+				android:src="@drawable/ic_calendar"
+				android:contentDescription="@string/save_comments" />
+	
+			<ImageButton
+				android:id="@+id/programItemMail"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@+id/programItemCal"
+				android:src="@drawable/ic_email"
+				android:contentDescription="@string/save_comments" />
+
+		    <RatingBar
+		        android:id="@+id/programItemRatingBar"
+		        android:layout_width="wrap_content"
+		        android:layout_height="50dp"
+				android:layout_toRightOf="@+id/programItemMail"
+		        android:scaleX="0.5"
+		        android:scaleY="0.5" />
+
+			<TextView
+				android:id="@+id/programItemTitle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/programItemCal"
+				android:visibility="invisible"
+				android:padding="10dp"
+				android:layout_gravity="left|top"
+				android:textStyle="bold"
+				android:textSize="18sp" />
+	
+		</RelativeLayout>
+	
+		<ScrollView
+			android:id="@+id/programItemScroll"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:visibility="invisible"
+			android:padding="10dp" >
+			<LinearLayout
+				android:id="@+id/programItem"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" >
+				<TextView
+					android:id="@+id/programItemContent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:src="@drawable/ic_tick"
-					android:contentDescription="@string/save_comments" />
-				<ImageButton
-					android:id="@+id/programItemCam"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:src="@drawable/ic_camera"
-					android:contentDescription="@string/take_picture" />
+					android:layout_marginBottom="15dp"
+					android:textSize="14sp"
+					android:textIsSelectable="false" />
 				<LinearLayout
-					android:id="@+id/programItemPics"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="5dp"
-					android:layout_marginTop="5dp"
 					android:orientation="horizontal" >
-				</LinearLayout>					
+					<ImageButton
+						android:id="@+id/programItemSave"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:src="@drawable/ic_tick"
+						android:contentDescription="@string/save_comments" />
+					<ImageButton
+						android:id="@+id/programItemCam"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:src="@drawable/ic_camera"
+						android:contentDescription="@string/take_picture" />
+					<LinearLayout
+						android:id="@+id/programItemPics"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="5dp"
+						android:layout_marginTop="5dp"
+						android:orientation="horizontal" >
+					</LinearLayout>
+				</LinearLayout>
+				<EditText
+					android:id="@+id/programItemComments"
+					android:layout_width="fill_parent"
+					android:layout_height="150dp"
+					android:textSize="14sp"
+					android:inputType="textMultiLine"
+					android:gravity="left|top"
+					android:hint="@string/enter_comments" />
+				<TextView 
+					android:id="@+id/programItemCommentsInfo"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:layout_gravity="right|bottom"
+					android:textIsSelectable="false" />
 			</LinearLayout>
-			<EditText
-				android:id="@+id/programItemComments"
-				android:layout_width="fill_parent"
-				android:layout_height="150dp"
-				android:textSize="14sp"
-				android:inputType="textMultiLine"
-				android:gravity="left|top"
-				android:hint="@string/enter_comments" />
-			<TextView 
-				android:id="@+id/programItemCommentsInfo"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:layout_gravity="right|bottom"
-				android:textIsSelectable="false" />
-		</LinearLayout>
-	</ScrollView>
-</LinearLayout>
+		</ScrollView>
+	</LinearLayout>
+
+	<SlidingDrawer
+		android:id="@+id/sliderPresenter"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:handle="@+id/handlePerson"
+		android:content="@+id/fragPerson"
+		android:layout_marginLeft="150dp"
+		android:orientation="horizontal">
+		<Button
+			android:id="@+id/handlePerson"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableTop="@drawable/ic_navigation_drawer" />
+		<fragment
+			android:id="@+id/fragPerson"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			class="com.brassorange.eventapp.PersonFragment" />
+	</SlidingDrawer>
+
+</FrameLayout>

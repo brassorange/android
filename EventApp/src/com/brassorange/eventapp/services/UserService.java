@@ -17,15 +17,18 @@ import org.apache.http.message.BasicNameValuePair;
 import com.brassorange.eventapp.EventApp;
 import com.brassorange.eventapp.model.Profile;
 
+import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class UserService extends AsyncTask<String, Void, String> {
 
 	String actionType = "";
+	private EventApp eventApp;
 	private CompletionListener listener;
 
-	public UserService(CompletionListener listener) {
+	public UserService(Application application, CompletionListener listener) {
+		this.eventApp = (EventApp)application;
 		this.listener = listener;
 	}
 
@@ -37,20 +40,20 @@ public class UserService extends AsyncTask<String, Void, String> {
 
 		if (actionType.equals("profile")) {
 			params.add(new BasicNameValuePair("uid", arg0[1]));
-			String response = httpPoster.post(EventApp.urlGetProfile, params);
+			String response = httpPoster.post(eventApp.getUrlGetProfile(), params);
 			return response;
 		} else {
 			String programItemId = arg0[1];
-			params.add(new BasicNameValuePair("uid", EventApp.uid));
+			params.add(new BasicNameValuePair("uid", eventApp.getUid()));
 			params.add(new BasicNameValuePair("pid", programItemId));
 	
 			if (actionType.equals("comment")) {
 				params.add(new BasicNameValuePair("c", arg0[2]));
-				httpPoster.post(EventApp.urlPutComment, params);
+				httpPoster.post(eventApp.getUrlPutComment(), params);
 			}
 			if (actionType.equals("rate")) {
 				params.add(new BasicNameValuePair("r", arg0[2]));
-		        httpPoster.post(EventApp.urlPutRating, params);
+		        httpPoster.post(eventApp.getUrlPutRating(), params);
 			}
 		}
 		return null;
@@ -71,11 +74,11 @@ public class UserService extends AsyncTask<String, Void, String> {
 			XmlParser xmlParser = new XmlParser();
 			Profile profile = xmlParser.parseProfileResponse(result);
 			if (profile != null) {
-				EventApp.uid         = profile.uid;
-				EventApp.firstName   = profile.firstName;
-				EventApp.lastName    = profile.lastName;
-				EventApp.biography   = profile.biography;
-				EventApp.mailAccount = profile.email;
+				eventApp.setUid(profile.uid);
+				eventApp.setFirstName(profile.firstName);
+				eventApp.setLastName(profile.lastName);
+				eventApp.setBiography(profile.biography);
+				eventApp.setMailAccount(profile.email);
 			}
 			listener.onTaskCompleted();
 		}

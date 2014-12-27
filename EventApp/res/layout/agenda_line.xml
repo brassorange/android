@@ -12,21 +12,19 @@
 		android:layout_height="60dp" />
 
     <TextView
-		android:id="@+id/agendaItemName"
+		android:id="@+id/agendaItemTitle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@+id/agendaItemImage"
-		android:text="Example application"
 		android:textColor="#404040"
 		android:textSize="14sp" />
 
     <TextView
-		android:id="@+id/agendaItemDate"
+		android:id="@+id/agendaItemSummary"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@+id/agendaItemImage"
-		android:layout_below="@+id/agendaItemName"
-		android:text="Example application"
+		android:layout_below="@+id/agendaItemTitle"
 		android:textColor="#606060"
 		android:textSize="12sp" />
 
