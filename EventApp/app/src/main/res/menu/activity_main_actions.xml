@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<!-- http://www.androidhive.info/2013/11/android-working-with-action-bar/ -->
+	<item android:id="@+id/action_search"
+		android:icon="@drawable/ic_action_search"
+		android:title="@string/action_search"
+		android:showAsAction="always"
+		android:actionViewClass="android.widget.SearchView" />
+
+	<!-- Refresh -->
+	<item android:id="@+id/action_refresh"
+		android:icon="@drawable/ic_action_refresh"
+		android:title="@string/action_refresh"
+		android:showAsAction="ifRoom" />
+
+	<!-- The following items are not shown, but are listed beneath the "three-dot" icon -->
+
+	<!-- Profile -->
+	<item android:id="@+id/action_profile"
+		android:icon="@drawable/ic_action_profile"
+		android:title="@string/action_profile"
+		android:showAsAction="never"/>
+
+	<!-- Help -->
+	<item android:id="@+id/action_help"
+		android:icon="@drawable/ic_action_help"
+		android:title="@string/action_help"
+		android:showAsAction="never"/>
+
+	<!-- Settings -->
+	<item android:id="@+id/action_settings"
+		android:title="@string/action_settings"
+		android:showAsAction="never"/>
+
+	<!-- Check updates -->
+	<item android:id="@+id/action_check_updates"
+		android:icon="@drawable/ic_action_refresh"
+		android:title="@string/action_check_updates"
+		android:showAsAction="never" />
+
+</menu>
