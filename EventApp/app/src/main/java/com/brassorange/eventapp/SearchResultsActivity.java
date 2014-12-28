@@ -28,36 +28,30 @@ import android.util.Log;
 import android.widget.TextView;
 
 public class SearchResultsActivity extends Activity {
-	 
+
 	private TextView txtQuery;
- 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_results);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
- 
-		txtQuery = (TextView) findViewById(R.id.txtQuery);
-
-        Log.d(this.getClass().getSimpleName(), "onCreate -> search for: " + txtQuery);
+		txtQuery = (TextView)findViewById(R.id.txtQuery);
 
         handleIntent(getIntent());
 	}
- 
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		setIntent(intent);
 		handleIntent(intent);
 	}
- 
+
 	private void handleIntent(Intent intent) {
-        Log.d(this.getClass().getSimpleName(), "handleIntent");
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 
-            Log.d(this.getClass().getSimpleName(), "handleIntent, query="+query);
+            Log.d(this.getClass().getSimpleName(), "handleIntent, query=" + query.getBytes().toString());
 
 	        FileUtils fileUtils = new FileUtils(getApplicationContext());
 	        String programXml = fileUtils.readFileFromInternalStorage("program.xml");
