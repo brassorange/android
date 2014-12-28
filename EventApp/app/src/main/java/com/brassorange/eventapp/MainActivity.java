@@ -8,7 +8,6 @@ import com.brassorange.eventapp.services.Updater;
 import com.brassorange.eventapp.services.FileUtils;
 import com.brassorange.eventapp.util.PrefTools;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,14 +21,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener, CompletionListener {
 
 	public FileUtils fileUtils;
 	public PrefTools prefTools;
 	private boolean isHttpSynched;
-    private Activity mainActivity;
 
     // The serialization (saved instance state) Bundle key representing the current dropdown position.
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
@@ -38,10 +35,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-        mainActivity = this;
-
-        Log.d(this.getClass().getSimpleName(), "onCreate");
 
         setupActionBar();
 
@@ -57,57 +50,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		fileUtils = new FileUtils(getApplicationContext());
 		prefTools = new PrefTools(getApplicationContext());
 
-        updateAgenda(); // One-time update
-        scheduleUpdate(30); // Update every 30 sec
+        updateAgenda(); // First-time update.
+        updateAgendaFromCloud(); // Update from cloud, if possible.
+        scheduleUpdate(0); // Update every n sec. If set to 0, then it never updates.
+
         setupNotificationService();
 	}
-
-    private void scheduleUpdate(int periodInSec) {
-        // Schedule a regular update
-        TimerTask timerTask = new TimerUpdateChecker();
-        Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 0, 1000*periodInSec);
-    }
-
-    private void setupNotificationService() {
-        String notificationService = Context.NOTIFICATION_SERVICE;
-        NotificationManager notificationManager = (NotificationManager) getSystemService(notificationService);
-        Notification notification = new Notification(R.drawable.ic_launcher, "Hello Notification!", System.currentTimeMillis());
-        Intent notificationIntent = new Intent(getApplicationContext(), PersonFragment.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
-        notification.setLatestEventInfo(getApplicationContext(), "Notification Title", "Notification Text", contentIntent);
-        //notificationManager.notify(1, notification);
-    }
-    private void setupActionBar() {
-        // Set up the action bar to show a dropdown list.
-        final ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
-        // Set up the dropdown list navigation in the action bar.
-        actionBar.setListNavigationCallbacks(
-                // Specify a SpinnerAdapter to populate the dropdown list.
-                new ArrayAdapter<String>(
-                        actionBar.getThemedContext(),
-                        android.R.layout.simple_list_item_1,
-                        android.R.id.text1,
-                        new String[]{
-                                getString(R.string.action_check_updates),
-                                getString(R.string.action_help),
-                                getString(R.string.action_profile),
-                        }),
-                this);
-    }
-
-    protected void updateAgenda() {
-        Updater updater = new Updater(this);
-        updater.execute();
-    }
-
-    protected void updateAgendaFromCloud() {
-        Updater updater = new Updater(this);
-        updater.execute("http");
-    }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -174,6 +122,55 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		responder.execute();
 	}
 	*/
+
+    private void scheduleUpdate(int periodInSec) {
+        // Schedule a regular update
+        TimerTask timerTask = new TimerUpdateChecker();
+        Timer timer = new Timer(true);
+        if (periodInSec > 0)
+            timer.scheduleAtFixedRate(timerTask, 0, 1000*periodInSec);
+    }
+
+    protected void updateAgenda() {
+        Updater updater = new Updater(this);
+        updater.execute();
+    }
+
+    protected void updateAgendaFromCloud() {
+        Updater updater = new Updater(this);
+        updater.execute("http");
+    }
+
+    private void setupActionBar() {
+        // Set up the action bar to show a dropdown list.
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        // Set up the dropdown list navigation in the action bar.
+        actionBar.setListNavigationCallbacks(
+                // Specify a SpinnerAdapter to populate the dropdown list.
+                new ArrayAdapter<String>(
+                        actionBar.getThemedContext(),
+                        android.R.layout.simple_list_item_1,
+                        android.R.id.text1,
+                        new String[]{
+                                getString(R.string.action_check_updates),
+                                getString(R.string.action_help),
+                                getString(R.string.action_profile),
+                        }),
+                this);
+    }
+
+    private void setupNotificationService() {
+        String notificationService = Context.NOTIFICATION_SERVICE;
+        NotificationManager notificationManager = (NotificationManager) getSystemService(notificationService);
+        Notification notification = new Notification(R.drawable.ic_launcher, "Hello Notification!", System.currentTimeMillis());
+        Intent notificationIntent = new Intent(getApplicationContext(), PersonFragment.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+        notification.setLatestEventInfo(getApplicationContext(), "Notification Title", "Notification Text", contentIntent);
+        //notificationManager.notify(1, notification);
+    }
 
 	public class TimerUpdateChecker extends TimerTask {
 		@Override
