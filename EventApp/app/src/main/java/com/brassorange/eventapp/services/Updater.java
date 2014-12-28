@@ -66,7 +66,7 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		Program program = xmlParser.parseProgramResponse(programXml);
 		ArrayList<Person> people = xmlParser.parsePeopleResponse(peopleXml);
 		// Attach presenters to program items
-		if (program.programItems != null) {
+		if (program != null && program.programItems != null) {
 			for (int i=0; i<program.programItems.size(); i++) {
 				ProgramItem programItem = program.programItems.get(i);
 				if (programItem.presenter != null) {
