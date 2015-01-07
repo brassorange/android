@@ -5,6 +5,10 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.brassorange.eventapp.model.Program;
+import com.brassorange.eventapp.services.FileUtils;
+import com.brassorange.eventapp.util.PrefTools;
+
 public class EventApp extends Application {
 
 	//http://rdcworld-android.blogspot.in/2012/07/read-store-log-cat-programmatically-in.html
@@ -26,6 +30,9 @@ public class EventApp extends Application {
 
 	public final boolean allowAnonymousComments = false;
 	public final boolean allowAnonymousRatings = false;
+
+    public FileUtils fileUtils;
+    public PrefTools prefTools;
 
 	public boolean isRanInEmulator() {
 		return ("sdk".equals(Build.PRODUCT));

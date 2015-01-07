@@ -1,89 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="#f0f0e0" >
+    android:layout_height="match_parent">
 
-	<ImageView
-		android:id="@+id/imageLogo"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_alignParentTop="true"
-		android:contentDescription="@string/logo"
-		android:src="@drawable/gmf" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f0f0e0" >
 
-	<fragment
-		android:id="@+id/fragAgenda"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_below="@+id/imageLogo"
-		class="com.brassorange.eventapp.AgendaFragment"
-        tools:layout="@layout/fragment_agenda" />
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/gmf" />
 
-	<!-- android.support.v4.widget.DrawerLayout
-	    android:id="@+id/drawer_layout"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent">
-	    <FrameLayout
-	        android:id="@+id/content_frame"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" />
-	    <ListView android:id="@+id/left_drawer"
-	        android:layout_width="240dp"
-	        android:layout_height="match_parent"
-	        android:layout_gravity="start"
-	        android:choiceMode="singleChoice"
-	        android:divider="@android:color/transparent"
-	        android:dividerHeight="0dp"
-	        android:background="#111"/>
-	</android.support.v4.widget.DrawerLayout -->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/imageLogo" />
 
-	<SlidingDrawer
-		android:id="@+id/slidingDrawerProgram"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:content="@+id/contentSlider"
-		android:handle="@+id/handleProgram"
-		android:orientation="horizontal" >
-		<Button
-			android:id="@+id/handleProgram"
-			android:layout_width="30dp"
-			android:layout_height="wrap_content"
-			android:drawableTop="@drawable/ic_navigation_drawer" />
-		<LinearLayout
-			android:id="@+id/contentSlider"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent" >
-			<fragment
-				android:id="@+id/fragPrg"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_marginTop="10dp"
-				class="com.brassorange.eventapp.ProgramFragment"
-                tools:layout="@layout/fragment_program" />
-		</LinearLayout>
-	</SlidingDrawer>
-
-	<RelativeLayout
-	    android:id="@+id/overlay"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:visibility="visible"
-	    android:alpha="0.5">
-
-		<TextView
-		    android:id="@+id/ovlTitle"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_alignParentTop="true"
-		    android:layout_marginLeft="20dp"
-		    android:layout_marginTop="20dp"
-		    android:textSize="20sp"
-		    android:textColor="#000000"
-		    android:text="8734638478" />
     </RelativeLayout>
 
-</RelativeLayout>
+    <ListView android:id="@+id/left_drawer"
+        android:headerDividersEnabled="true"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#114"/>
+
+</android.support.v4.widget.DrawerLayout>

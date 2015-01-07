@@ -2,26 +2,27 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/fragPrgLayout"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+    android:background="@drawable/background_program_item">
 
 	<LinearLayout
 		android:id="@+id/fragPrgBase"
-		android:background="#C0C0C0"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical" >
-	
+
+        <!-- TODO: Take the listProgramItems away at some moment -->
 		<ListView
 			android:id="@+id/listProgramItems"
 			android:layout_width="match_parent"
 			android:layout_height="200dp"
 			android:layout_marginRight="30dp"
-			android:choiceMode="singleChoice" />
+			android:choiceMode="singleChoice"
+            android:visibility="gone"/>
 	
 		<RelativeLayout
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:background="#C0C0C0"
 		    android:orientation="vertical" >
 	
 			<ImageButton
@@ -59,7 +60,7 @@
 				android:textSize="18sp" />
 	
 		</RelativeLayout>
-	
+
 		<ScrollView
 			android:id="@+id/programItemScroll"
 			android:layout_width="match_parent"
@@ -75,9 +76,19 @@
 					android:id="@+id/programItemContent"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="15dp"
+					android:layout_marginBottom="5dp"
 					android:textSize="14sp"
 					android:textIsSelectable="false" />
+                <RelativeLayout
+                    android:id="@+id/presenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp">
+                    <TextView
+                        android:id="@+id/personName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
 				<LinearLayout
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -119,26 +130,7 @@
 					android:textIsSelectable="false" />
 			</LinearLayout>
 		</ScrollView>
-	</LinearLayout>
 
-	<SlidingDrawer
-		android:id="@+id/sliderPresenter"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:handle="@+id/handlePerson"
-		android:content="@+id/fragPerson"
-		android:layout_marginLeft="150dp"
-		android:orientation="horizontal">
-		<Button
-			android:id="@+id/handlePerson"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:drawableTop="@drawable/ic_navigation_drawer" />
-		<fragment
-			android:id="@+id/fragPerson"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			class="com.brassorange.eventapp.PersonFragment" />
-	</SlidingDrawer>
+	</LinearLayout>
 
 </FrameLayout>

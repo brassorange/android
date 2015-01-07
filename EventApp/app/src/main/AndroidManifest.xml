@@ -15,7 +15,11 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-    
+
+    <!--
+    http://www.google.com/design/spec/layout/structure.html
+    -->
+
     <application
         android:name=".EventApp"
         android:allowBackup="true"
@@ -34,11 +38,23 @@
                 android:value=".SearchResultsActivity" />
         </activity>
         <activity
+            android:name="com.brassorange.eventapp.AgendaItemActivity"
+            android:parentActivityName="com.brassorange.eventapp.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.brassorange.eventapp.PersonActivity"
+            android:parentActivityName="com.brassorange.eventapp.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.brassorange.eventapp.ProfileActivity"
+            android:parentActivityName="com.brassorange.eventapp.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.brassorange.eventapp.PhotoActivity"
+            android:parentActivityName="com.brassorange.eventapp.MainActivity"
             android:label="@string/app_name" >
         </activity>
         

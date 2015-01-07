@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.brassorange.eventapp.adapters.ProgramAdapter;
+import com.brassorange.eventapp.model.Person;
 import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
 import com.brassorange.eventapp.services.CalendarTools;
@@ -45,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
@@ -62,9 +64,11 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_program, container, false);
-		eventApp = (EventApp)this.getActivity().getApplication();
+		eventApp = (EventApp)getActivity().getApplication();
 		calendarTools = new CalendarTools(getActivity());
 		emailTools = new EmailTools(getActivity());
+
+        Log.d(this.getClass().getSimpleName(), "programItemId=" + programItemId);
 
 		return view;
 	}
@@ -76,16 +80,19 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 
 		programItemId = programItem.id;
 
+        Log.d(this.getClass().getSimpleName(), "programItemId=" + programItemId);
+
 		TextView viewPITitle = (TextView)getView().findViewById(R.id.programItemTitle);
 		//TextView viewPISummary = (TextView)getView().findViewById(R.id.programItemSummary);
 		TextView viewPIContent = (TextView)getView().findViewById(R.id.programItemContent);
+        RelativeLayout layoutPresenter = (RelativeLayout)getView().findViewById(R.id.presenter);
 		ScrollView scrollPI = (ScrollView)getView().findViewById(R.id.programItemScroll);
 		LinearLayout viewPI = (LinearLayout)getView().findViewById(R.id.programItem);
 		final EditText editPIComments = (EditText)getView().findViewById(R.id.programItemComments);
-		ImageButton btnPogramItemCal = (ImageButton)getView().findViewById(R.id.programItemCal);
-		ImageButton btnPogramItemMail = (ImageButton)getView().findViewById(R.id.programItemMail);
-		ImageButton btnPogramItemSave = (ImageButton)getView().findViewById(R.id.programItemSave);
-		ImageButton btnPogramItemCam = (ImageButton)getView().findViewById(R.id.programItemCam);
+		ImageButton btnProgramItemCal = (ImageButton)getView().findViewById(R.id.programItemCal);
+		ImageButton btnProgramItemMail = (ImageButton)getView().findViewById(R.id.programItemMail);
+		ImageButton btnProgramItemSave = (ImageButton)getView().findViewById(R.id.programItemSave);
+		ImageButton btnProgramItemCam = (ImageButton)getView().findViewById(R.id.programItemCam);
 		RatingBar ratingPI = (RatingBar)getView().findViewById(R.id.programItemRatingBar);
 		final TextView viewPICommentsInfo = (TextView)getView().findViewById(R.id.programItemCommentsInfo);
 
@@ -108,13 +115,13 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 
 		// Display the user-controlled contents:
 		// Comments
-		final MainActivity mainActivity = (MainActivity)getActivity();
+		final EventApp eventApp = (EventApp)getActivity().getApplication();
 		final String fileNameComments = MessageFormat.format(tmplCmtName, new Object[]{programItemId});
 		final String prefNameRating = MessageFormat.format(tmplRtgName, new Object[]{programItemId});
-		editPIComments.setText(mainActivity.fileUtils.readFileFromInternalStorage(fileNameComments));
+		editPIComments.setText(eventApp.fileUtils.readFileFromInternalStorage(fileNameComments));
 		viewPICommentsInfo.setText("");
 		long lastModified = 0;
-		File fileComments = mainActivity.fileUtils.getFileFromInternalStorage(fileNameComments);
+		File fileComments = eventApp.fileUtils.getFileFromInternalStorage(fileNameComments);
 		if (fileComments != null)
 			lastModified = fileComments.lastModified();
 		if (lastModified > 0) {
@@ -124,7 +131,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		// Rating
 		if (ratingPI != null) {
 			try {
-				ratingPI.setRating(Float.valueOf(mainActivity.prefTools.retrievePreference(prefNameRating)));
+				ratingPI.setRating(Float.valueOf(eventApp.prefTools.retrievePreference(prefNameRating)));
 			} catch(Exception e) {
 				ratingPI.setRating(0);
 			}
@@ -132,28 +139,28 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		// Pictures
 		LinearLayout viewPIPics = (LinearLayout)getView().findViewById(R.id.programItemPics);
 		viewPIPics.removeAllViews();
-		List<String> fileNames = ((MainActivity)getActivity()).fileUtils.getFileNamesFromInternalStorage(MessageFormat.format(tmplPicName, new Object[]{programItemId, "\\d{3}"}));
+		List<String> fileNames = eventApp.fileUtils.getFileNamesFromInternalStorage(MessageFormat.format(tmplPicName, new Object[]{programItemId, "\\d{3}"}));
 		if (fileNames != null) {
 			for (final String fileName : fileNames) {
-				Bitmap bm = ((MainActivity)getActivity()).fileUtils.readImageFromInternalStorage(fileName);
+				Bitmap bm = eventApp.fileUtils.readImageFromInternalStorage(fileName);
 				addImageToList(fileName, bm);
 		    }
 		}
 
 	    // Creating a Google Calendar event
-		String eventID = mainActivity.prefTools.retrievePreference("GCal_" + programItem.id);
+		String eventID = eventApp.prefTools.retrievePreference("GCal_" + programItem.id);
 		if (eventID != null && eventID != "") {
-			btnPogramItemCal.setVisibility(View.INVISIBLE);
+			btnProgramItemCal.setVisibility(View.INVISIBLE);
 		} else {
-			btnPogramItemCal.setVisibility(View.VISIBLE);
-			btnPogramItemCal.setOnClickListener(new OnClickListener() {
+			btnProgramItemCal.setVisibility(View.VISIBLE);
+			btnProgramItemCal.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					Long eventID = calendarTools.setEvent(programItem.date, 
 														programItem.durationMin,
 														programItem.title,
 														programItem.title);
-					mainActivity.prefTools.storePreference("GCal_" + programItem.id, String.valueOf(eventID));
+                    eventApp.prefTools.storePreference("GCal_" + programItem.id, String.valueOf(eventID));
 				}
 			});
 		}
@@ -162,10 +169,10 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		if (programItem.presenter != null) {
 			String emailPresenter = programItem.presenter.email;
 			if (emailPresenter == null || emailPresenter == "") {
-				btnPogramItemMail.setVisibility(View.INVISIBLE);
+				btnProgramItemMail.setVisibility(View.INVISIBLE);
 			} else {
-				btnPogramItemMail.setVisibility(View.VISIBLE);
-				btnPogramItemMail.setOnClickListener(new OnClickListener() {
+				btnProgramItemMail.setVisibility(View.VISIBLE);
+				btnProgramItemMail.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
 						emailTools.sendMail(programItem.title, programItem.summary, programItem.presenter.email);
@@ -177,13 +184,13 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		final ProgramFragment programFragment = this;
 
 		// Saving the ProgramItem Comments
-		btnPogramItemSave.setOnClickListener(new OnClickListener() {
+		btnProgramItemSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// User must be logged in to be allowed to comment.
 				if (!eventApp.allowAnonymousComments && eventApp.checkLoginStatus()) {
 					String commentsText = String.valueOf(editPIComments.getText());
-					mainActivity.fileUtils.writeFileToInternalStorage(fileNameComments, commentsText);
+                    eventApp.fileUtils.writeFileToInternalStorage(fileNameComments, commentsText);
 					//mainActivity.provideResponse();
 					String lastModifiedAsText = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date());
 					viewPICommentsInfo.setText("Last modified: " + lastModifiedAsText);
@@ -196,7 +203,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		});
 
 		// Taking a picture
-		btnPogramItemCam.setOnClickListener(new OnClickListener() {
+		btnProgramItemCam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// http://chrisrisner.com/31-Days-of-Android--Day-29%E2%80%93Using-the-Camera
@@ -215,7 +222,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 
 					// User must be logged in to be allowed to rate.
 					if (!eventApp.allowAnonymousRatings && eventApp.checkLoginStatus()) {
-						mainActivity.prefTools.storePreference(prefNameRating, String.valueOf(value));
+                        eventApp.prefTools.storePreference(prefNameRating, String.valueOf(value));
 
 						// Upload update to server
 						Log.d(this.getClass().getSimpleName(), "UserService -> Rate " + eventApp.getMailAccount());
@@ -242,18 +249,35 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 			}
 		});
 */
+
+        RelativeLayout viewPresenter = (RelativeLayout)getView().findViewById(R.id.presenter);
+        viewPresenter.setVisibility(View.GONE);
+        TextView viewPresenterName = (TextView)getView().findViewById(R.id.personName);
+        final Person presenter = programItem.presenter;
+        if (presenter != null) {
+            String presenterName = presenter.getFullName();
+            if (presenterName != null && presenterName != "") {
+                viewPresenter.setVisibility(View.VISIBLE);
+                viewPresenterName.setText("Presenter: " + presenterName);
+                layoutPresenter.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), PersonActivity.class);
+                        intent.putExtra("person", presenter);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
+
 		// Update the slider with presenter data
+        /*
 		SlidingDrawer sliderPresenter = (SlidingDrawer)getView().findViewById(R.id.sliderPresenter);
 		if (sliderPresenter != null) {
 			if (programItem.presenter == null || programItem.presenter.uid == "") {
 				// Hide if there's no presenter
 				sliderPresenter.setVisibility(View.GONE);
 			} else {
-				String presenterName = programItem.presenter.lastName;
-				if (programItem.presenter.middleNames != null && programItem.presenter.middleNames != "")
-					presenterName = programItem.presenter.middleNames + " " + presenterName;
-				if (programItem.presenter.firstName != null && programItem.presenter.firstName != "")
-					presenterName = programItem.presenter.firstName + " " + presenterName;
 
 				// Make slider visible
 				sliderPresenter.setVisibility(View.VISIBLE);
@@ -277,8 +301,10 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 				viewPersonBio.setText(programItem.presenter.biography);
 			}
 		}
+		*/
 	}
 
+/*
 	public void updateProgram(Context ctx, final Program program) {
 		// Called by Updater.onPostExecute
 		// Lists the ProgramItems in "listview_events"
@@ -296,6 +322,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		});
 		listProgramItems.performItemClick(listProgramItems.findViewById(R.id.eventName), 1, 0);
 	}
+*/
 
 	// After taking a picture:
 	@Override
@@ -303,7 +330,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		Bundle extras = intent.getExtras();
 		Bitmap bm = (Bitmap)extras.get("data");
 		String newFileName = MessageFormat.format(tmplPicName, new Object[]{programItemId, "001"});
-		List<String> fileNames = ((MainActivity)getActivity()).fileUtils.getFileNamesFromInternalStorage(MessageFormat.format(tmplPicName, new Object[]{programItemId, "\\d{3}"}));
+		List<String> fileNames = eventApp.fileUtils.getFileNamesFromInternalStorage(MessageFormat.format(tmplPicName, new Object[]{programItemId, "\\d{3}"}));
 		if (fileNames.size() > 0) {
 			try {
 				String lastFileName = fileNames.get(fileNames.size() - 1);
@@ -313,7 +340,7 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 			} catch(Exception e) {
 			}
 		}
-		((MainActivity)getActivity()).fileUtils.writeImageToInternalStorage(newFileName, bm);
+        eventApp.fileUtils.writeImageToInternalStorage(newFileName, bm);
 		addImageToList(newFileName, bm);
 
 		// TODO: Send to cloud

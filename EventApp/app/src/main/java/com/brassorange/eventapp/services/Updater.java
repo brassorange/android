@@ -2,6 +2,7 @@ package com.brassorange.eventapp.services;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -9,6 +10,8 @@ import android.util.Log;
 
 import com.brassorange.eventapp.AgendaFragment;
 import com.brassorange.eventapp.EventApp;
+import com.brassorange.eventapp.MainActivity;
+import com.brassorange.eventapp.PresentersFragment;
 import com.brassorange.eventapp.ProgramFragment;
 import com.brassorange.eventapp.R;
 import com.brassorange.eventapp.model.Person;
@@ -65,6 +68,28 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		XmlParser xmlParser = new XmlParser();
 		Program program = xmlParser.parseProgramResponse(programXml);
 		ArrayList<Person> people = xmlParser.parsePeopleResponse(peopleXml);
+
+        // -----------------------------------------------------------------------------------------
+        RandomStuff rs = new RandomStuff();
+        for (int i=0; i<50; i++) {
+            ProgramItem programItem = new ProgramItem();
+            programItem.id = String.valueOf(1000 + i);
+            programItem.title = rs.makeText(100);
+            programItem.summary = rs.makeText(200);
+            programItem.content = rs.makeText(1000);
+            Person person = new Person();
+            person.uid = rs.makeText(25);
+            person.firstName = rs.makeName();
+            person.lastName = rs.makeName();
+            person.title = rs.makeText(60);
+            person.email = rs.makeName() + "@" + rs.makeName() + "." + rs.makeText(2);
+            person.biography = rs.makeText(2000);
+            person.imageName = "allen_john";
+            programItem.presenter = person;
+            program.programItems.add(programItem);
+        }
+        // -----------------------------------------------------------------------------------------
+
 		// Attach presenters to program items
 		if (program != null && program.programItems != null) {
 			for (int i=0; i<program.programItems.size(); i++) {
@@ -87,15 +112,65 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		activity.runOnUiThread(new Runnable() {
 	    	@Override
 	    	public void run() {
-				ProgramFragment programFragment = (ProgramFragment)activity.getFragmentManager().findFragmentById(R.id.fragPrg);
-				if (programFragment != null && program != null)
-					programFragment.updateProgram(activity.getApplicationContext(), program);
-				AgendaFragment agendaFragment = (AgendaFragment)activity.getFragmentManager().findFragmentById(R.id.fragAgenda);
-				if (agendaFragment != null && program != null)
-					agendaFragment.updateProgram(program);
-		    	((CompletionListener)activity).onTaskCompleted();
+                System.out.println("Updater.onPostExecute " + program);
+                if (program != null) {
+//                    ProgramFragment programFragment = (ProgramFragment)activity.getFragmentManager().findFragmentById(R.id.fragPrg);
+//                    if (programFragment != null)
+//                        programFragment.updateProgram(activity.getApplicationContext(), program);
+
+                    AgendaFragment agendaFragment = ((MainActivity)activity).agendaFragment;
+                    if (agendaFragment != null)
+                        agendaFragment.updateProgram(program);
+
+                    PresentersFragment presentersFragment = ((MainActivity)activity).presentersFragment;
+                    if (presentersFragment != null)
+                        presentersFragment.updatePresenters(program);
+
+                    ((CompletionListener)activity).onTaskCompleted();
+                }
 	    	}
 		});
 	}
 
+    public class RandomStuff {
+
+
+        public String makeWord(int length) {
+            char[] symbols;
+            Random random = new Random();
+            StringBuilder tmp = new StringBuilder();
+            //for (char ch = '0'; ch <= '9'; ++ch)
+            //    tmp.append(ch);
+            for (char ch = 'a'; ch <= 'z'; ++ch)
+                tmp.append(ch);
+            symbols = tmp.toString().toCharArray();
+
+            if (length < 1)
+                throw new IllegalArgumentException("length < 1: " + length);
+            char[] buf = new char[length];
+            for (int idx = 0; idx < buf.length; ++idx)
+                buf[idx] = symbols[random.nextInt(symbols.length)];
+            return new String(buf);
+        }
+
+        public String makeText(int length) {
+            Random random = new Random();
+            int minLength = 1;
+            int maxLength = 10;
+            StringBuilder tmp = new StringBuilder();
+            while (tmp.length() < length) {
+                tmp.append(makeWord(random.nextInt(maxLength) + minLength) + " ");
+            }
+            return new String(tmp);
+        }
+
+        public String makeName() {
+            Random random = new Random();
+            int minLength = 4;
+            int maxLength = 10;
+            StringBuilder tmp = new StringBuilder();
+            tmp.append(makeWord(random.nextInt(maxLength) + minLength));
+            return new String(tmp);
+        }
+    }
 }
