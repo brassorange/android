@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- http://www.google.com/design/spec/style/color.html -->
+    <drawable name="blue">#770000ff</drawable>
+    <color name="amber_50">#fff8e1</color>
+    <color name="amber_100">#ffecb3</color>
+    <color name="amber_200">#ffe082</color>
+    <color name="amber_300">#ffd54f</color>
+    <color name="amber_400">#ffca28</color>
+    <color name="amber_500">#ffc107</color>
+</resources>
