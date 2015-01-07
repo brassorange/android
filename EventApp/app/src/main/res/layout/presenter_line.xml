@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/presentersList"
+    android:background="@drawable/listitem"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dp" >
+
+    <TextView
+        android:id="@+id/sectionBreak"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:paddingLeft="65dp"
+        android:textColor="#224"
+        android:textSize="22dp" />
+
+    <ImageView
+        android:id="@+id/presenterImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_bullet" />
+
+    <TextView
+        android:id="@+id/presenterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/presenterImage"
+        android:textColor="#224"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/presenterDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/presenterImage"
+        android:layout_below="@+id/presenterName"
+        android:singleLine="true"
+        android:textColor="#336"
+        android:textSize="12sp" />
+
+</RelativeLayout>
