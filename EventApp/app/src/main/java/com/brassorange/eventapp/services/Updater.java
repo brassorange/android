@@ -2,6 +2,7 @@ package com.brassorange.eventapp.services;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import android.app.Activity;
@@ -12,12 +13,10 @@ import com.brassorange.eventapp.AgendaFragment;
 import com.brassorange.eventapp.EventApp;
 import com.brassorange.eventapp.MainActivity;
 import com.brassorange.eventapp.PresentersFragment;
-import com.brassorange.eventapp.ProgramFragment;
 import com.brassorange.eventapp.R;
 import com.brassorange.eventapp.model.Person;
 import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
-import com.brassorange.eventapp.services.FileUtils;
 
 public class Updater extends AsyncTask<String, Void, Program> {
 
@@ -32,6 +31,8 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		// Prepare the event list
 		String programXml = "";
 		String peopleXml = "";
+
+        Log.d(this.getClass().getSimpleName(), "start reading from file");
 
 		// Read from file
         try {
@@ -61,6 +62,8 @@ public class Updater extends AsyncTask<String, Void, Program> {
 	        	programXml = programXmlHttp;
         }
 
+        Log.d(this.getClass().getSimpleName(), "write to internal storage");
+
         FileUtils fileUtils = new FileUtils(activity.getApplicationContext());
         fileUtils.writeFileToInternalStorage("program.xml", programXml);
         fileUtils.writeFileToInternalStorage("people.xml", peopleXml);
@@ -70,11 +73,12 @@ public class Updater extends AsyncTask<String, Void, Program> {
 		ArrayList<Person> people = xmlParser.parsePeopleResponse(peopleXml);
 
         // -----------------------------------------------------------------------------------------
+        Log.d(this.getClass().getSimpleName(), "randomize");
         RandomStuff rs = new RandomStuff();
         for (int i=0; i<50; i++) {
             ProgramItem programItem = new ProgramItem();
             programItem.id = String.valueOf(1000 + i);
-            programItem.title = rs.makeText(100);
+            programItem.title = rs.makeText(30);
             programItem.summary = rs.makeText(200);
             programItem.content = rs.makeText(1000);
             Person person = new Person();
@@ -91,16 +95,27 @@ public class Updater extends AsyncTask<String, Void, Program> {
         // -----------------------------------------------------------------------------------------
 
 		// Attach presenters to program items
-		if (program != null && program.programItems != null) {
+        Log.d(this.getClass().getSimpleName(), "attach presenters to program items");
+        HashMap<String, ArrayList<ProgramItem>> presenterItemsHashMap = new HashMap();
+
+        if (program != null && program.programItems != null) {
 			for (int i=0; i<program.programItems.size(); i++) {
 				ProgramItem programItem = program.programItems.get(i);
-				if (programItem.presenter != null) {
+                Person presenter = programItem.presenter;
+				if (presenter != null) {
 					for (int p=0; p<people.size(); p++) {
-						if (people.get(p).uid.equals(programItem.presenter.uid)) {
-							programItem.presenter = people.get(p);
+						if (people.get(p).uid.equals(presenter.uid)) {
+							presenter = people.get(p);
 						}
 					}
-				}
+                    ArrayList<ProgramItem> presenterItems = presenterItemsHashMap.get(presenter.uid);
+                    if (presenterItems == null)
+                        presenterItems = new ArrayList();
+                    presenterItems.add(programItem);
+                    presenterItemsHashMap.put(presenter.uid, presenterItems);
+                    presenter.presenterItems = presenterItemsHashMap.get(programItem.presenter.uid);
+                }
+                program.programItems.get(i).presenter = presenter;
 			}
 		}
 
@@ -133,7 +148,6 @@ public class Updater extends AsyncTask<String, Void, Program> {
 	}
 
     public class RandomStuff {
-
 
         public String makeWord(int length) {
             char[] symbols;

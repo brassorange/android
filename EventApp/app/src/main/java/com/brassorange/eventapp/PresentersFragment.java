@@ -69,15 +69,16 @@ public class PresentersFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, int idInList, long arg3) {
                     Person person = persons[idInList];
+
                     if (person.uid.equals("-1"))
                         return;
-                    if (viewWidth > 600) {
+//                    if (viewWidth > 600) {
                         //TODO: Open PersonActivity in a fragment...
-                    } else {
+//                    } else {
                         Intent intent = new Intent(getActivity(), PersonActivity.class);
                         intent.putExtra("person", persons[idInList]);
                         startActivity(intent);
-                    }
+//                    }
                 }
             });
         }
@@ -97,6 +98,7 @@ public class PresentersFragment extends Fragment {
                 }
             }
         }
+
         Collections.sort(personNames);
         ArrayList<String> personNamesWithSections = new ArrayList<>();
         String sectionName = "";

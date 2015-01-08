@@ -9,13 +9,10 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /*
@@ -23,13 +20,11 @@ One of the 2 main fragments, selectable through the Navigation Drawer.
 */
 
 public class AgendaFragment extends Fragment {
-	private int viewWidth = 250;
-	private int viewHeight = 150;
+	private int viewWidth = 0;
 	private int btnWidth = 250;
 	private int btnHeight = 150;
 
 	private GridLayout gridAgenda;
-	private RelativeLayout overlay;
     private Program program;
 
     @Override
@@ -40,7 +35,9 @@ public class AgendaFragment extends Fragment {
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
                 viewWidth = view.getMeasuredWidth();
-                viewHeight = view.getMeasuredHeight();
+                if (viewWidth <= 480)
+                    btnWidth = 180;
+                //viewHeight = view.getMeasuredHeight();
                 updateView();
 
                 // Remove after the first run so it doesn't fire forever
@@ -90,14 +87,12 @@ public class AgendaFragment extends Fragment {
                 viewItem.setText(title);
                 gridAgenda.addView(viewItem);
 
-                viewItem.setOnTouchListener(new OnTouchListener() {
+                viewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onTouch(View arg0, MotionEvent arg1) {
+                    public void onClick(View arg0) {
                         Intent intent = new Intent(getActivity(), AgendaItemActivity.class);
                         intent.putExtra("programItem", programItem);
                         startActivity(intent);
-
-                        return false;
                     }
                 });
             }

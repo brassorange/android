@@ -3,7 +3,6 @@ package com.brassorange.eventapp.services;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +16,7 @@ import java.util.Vector;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class FileUtils {
 
@@ -51,9 +51,9 @@ public class FileUtils {
 			bitmap.compress(Bitmap.CompressFormat.PNG, 90, pictureFile);
 			pictureFile.close();
 	    } catch (FileNotFoundException e) {
-	        //Log.d(TAG, "File not found: " + e.getMessage());
+	        Log.d(getClass().getSimpleName(), "File not found: " + e.getMessage());
 	    } catch (IOException e) {
-	        //Log.d(TAG, "Error accessing file: " + e.getMessage());
+	        Log.d(getClass().getSimpleName(), "Error accessing file: " + e.getMessage());
 		}
 	}
 
@@ -66,9 +66,10 @@ public class FileUtils {
 		try {
 			input = new BufferedReader(new InputStreamReader(ctx.openFileInput(fileName)));
 			String line;
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			while ((line = input.readLine()) != null) {
-				buffer.append(line + eol);
+                buffer.append(line)
+                      .append(eol);
 			}
 			fileContents = buffer.toString();
 		} catch (Exception e) {
@@ -102,7 +103,7 @@ public class FileUtils {
 
 	public List<String> getFileNamesFromInternalStorage(String filePattern) {
 		String path = ctx.getFilesDir().getAbsolutePath();
-		List<String> fileNames = new Vector<String>();
+		List<String> fileNames = new Vector<>();
 	    for (final File fileEntry : (new File(path)).listFiles()) {
 	        if (fileEntry.isFile() 
 	        && fileEntry.getName().matches(filePattern)) {
@@ -114,6 +115,7 @@ public class FileUtils {
 	}
 
 	//-----------------------------------------------------------
+    /*
 	public String retrieve(String filePath) throws Exception {
 		File fl = new File(filePath);
 		FileInputStream fin = new FileInputStream(fl);
@@ -122,6 +124,8 @@ public class FileUtils {
 		fin.close();        
 		return ret;
 	}
+	*/
+    /*
 	private String convertStreamToString(InputStream is) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		StringBuilder sb = new StringBuilder();
@@ -132,6 +136,6 @@ public class FileUtils {
 		reader.close();
 		return sb.toString();
 	}
-
+    */
 
 }

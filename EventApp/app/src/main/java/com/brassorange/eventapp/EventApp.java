@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.Toast;
 
-import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.services.FileUtils;
 import com.brassorange.eventapp.util.PrefTools;
 
@@ -39,7 +38,7 @@ public class EventApp extends Application {
 	}
 
 	private boolean isLoggedIn() {
-		return (uid != null && uid != "");
+		return (uid != null && !uid.equals(""));
 	}
 
 	public boolean checkLoginStatus() {

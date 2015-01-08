@@ -3,7 +3,6 @@ package com.brassorange.eventapp;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
 
 import java.util.ArrayList;

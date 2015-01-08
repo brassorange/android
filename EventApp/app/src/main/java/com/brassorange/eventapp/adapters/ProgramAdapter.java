@@ -34,16 +34,6 @@ public class ProgramAdapter extends ArrayAdapter<ProgramItem> {
 		TextView textView = (TextView)rowView.findViewById(R.id.eventName);
 		textView.setText(program.programItems.get(position).title);
 
-	    // change the icon for Windows and iPhone
-	/*
-		ImageView imageView = (ImageView)rowView.findViewById(R.id.icon);
-	    String s = values[position];
-	    if (s.startsWith("iPhone")) {
-	      imageView.setImageResource(R.drawable.no);
-	    } else {
-	      imageView.setImageResource(R.drawable.ok);
-	    }
-	*/
 		return rowView;
 	}
 }

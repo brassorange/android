@@ -23,7 +23,7 @@ public class CalendarTools {
 
 		String calendarName = ((EventApp)activity.getApplication()).getMailAccount();
 
-		Cursor cur = null;
+		Cursor cur;
 		ContentResolver cr = ctx.getContentResolver();
 		Uri uri = Calendars.CONTENT_URI; 
 		String selection = "((" + Calendars.ACCOUNT_NAME + " = ?) AND (" 
@@ -89,7 +89,6 @@ public class CalendarTools {
 		Uri uri = cr.insert(Events.CONTENT_URI, values);
 
 		// get the event ID that is the last element in the Uri
-		long eventID = Long.parseLong(uri.getLastPathSegment());
-		return eventID;
+		return Long.parseLong(uri.getLastPathSegment());
 	}
 }

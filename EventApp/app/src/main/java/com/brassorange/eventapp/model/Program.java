@@ -9,7 +9,7 @@ public class Program {
 	public ArrayList<ProgramItem> programItems;
 	
 	public Program() {
-		programItems = new ArrayList<ProgramItem>();
+		programItems = new ArrayList<>();
 	}
 
 }

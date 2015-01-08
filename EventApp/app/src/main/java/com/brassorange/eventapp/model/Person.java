@@ -1,6 +1,7 @@
 package com.brassorange.eventapp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Person implements Serializable {
 	public String uid;
@@ -11,6 +12,7 @@ public class Person implements Serializable {
 	public String biography;
 	public String imageName;
 	public String email;
+    public ArrayList<ProgramItem> presenterItems;
 
     public String getFullName() {
         String fullName = "";
@@ -24,14 +26,14 @@ public class Person implements Serializable {
     }
 
     public boolean hasFirstName() {
-        return (this.firstName != null && this.firstName != "");
+        return (this.firstName != null && !this.firstName.equals(""));
     }
 
     public boolean hasMiddleNames() {
-        return (this.middleNames != null && this.middleNames != "");
+        return (this.middleNames != null && !this.middleNames.equals(""));
     }
 
     public boolean hasLastName() {
-        return (this.lastName != null && this.lastName != "");
+        return (this.lastName != null && !this.lastName.equals(""));
     }
 }
