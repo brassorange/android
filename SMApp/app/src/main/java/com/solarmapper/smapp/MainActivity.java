@@ -3,7 +3,6 @@ package com.solarmapper.smapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,17 +11,34 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
+/*
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
 import com.jjoe64.graphview.BarGraphView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
+*/
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.solarmapper.smapp.services.Updater;
 import com.solarmapper.smapp.utils.PrefTools;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /*
@@ -134,6 +150,39 @@ public class MainActivity extends Activity {
     }
 
     public void buildGraph(float[] values) {
+        buildGraphMP(values);
+    }
+    public void buildGraphMP(float[] values) {
+        //https://github.com/PhilJay/MPAndroidChart
+        //ArrayList<Entry> vals = new ArrayList<Entry>();
+        ArrayList<BarEntry> vals = new ArrayList<BarEntry>();
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i=0; i<values.length; i++) {
+            //Entry entry = new Entry(values[i], i); // 0 == quarter 1
+            BarEntry entry = new BarEntry(values[i], i); // 0 == quarter 1
+            vals.add(entry);
+            xVals.add(String.valueOf(i));
+        }
+        //LineDataSet setComp1 = new LineDataSet(vals, "Consumption");
+        //ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        //dataSets.add(setComp1);
+        //LineData data = new LineData(xVals, dataSets);
+        BarDataSet setComp1 = new BarDataSet(vals, "Consumption");
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        dataSets.add(setComp1);
+        BarData data = new BarData(xVals, dataSets);
+
+        //LineChart mChart = new LineChart(getApplicationContext());
+        BarChart mChart = new BarChart(getApplicationContext());
+        mChart.setData(data);
+        mChart.set3DEnabled(false);
+
+        LinearLayout layoutGraph = (LinearLayout)findViewById(R.id.graph);
+        layoutGraph.removeAllViews();
+        layoutGraph.addView(mChart);
+    }
+/*
+    public void buildGraphGV(float[] values) {
         GraphView.GraphViewData[] gvd = new GraphView.GraphViewData[values.length];
         int maxValue = 0;
         float totalKwh = 0;
@@ -193,7 +242,7 @@ public class MainActivity extends Activity {
         layout.removeAllViews();
         layout.addView(graphView);
     }
-
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,7 +266,7 @@ public class MainActivity extends Activity {
             startActivityForResult(intent, LOGIN_REQUEST);
         } else if (id == R.id.action_logout) {
             prefTools.storePreference("apiKey", "");
-            LinearLayout layout = (LinearLayout)findViewById(R.id.layout);
+            RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout);
             layout.removeAllViews();
             adjustMenu();
         } else if (id == R.id.action_settings) {

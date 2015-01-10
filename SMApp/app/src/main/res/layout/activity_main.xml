@@ -35,7 +35,7 @@
         android:paddingTop="10dp" />
 
     <LinearLayout
-        android:id="@+id/layout"
+        android:id="@+id/graph"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
