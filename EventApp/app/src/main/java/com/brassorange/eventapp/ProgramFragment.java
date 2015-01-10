@@ -13,21 +13,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.brassorange.eventapp.adapters.ProgramAdapter;
 import com.brassorange.eventapp.model.Person;
-import com.brassorange.eventapp.model.Program;
 import com.brassorange.eventapp.model.ProgramItem;
 import com.brassorange.eventapp.services.CalendarTools;
 import com.brassorange.eventapp.services.EmailTools;
 import com.brassorange.eventapp.services.CompletionListener;
 import com.brassorange.eventapp.services.UserService;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -36,19 +32,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 public class ProgramFragment extends Fragment implements CompletionListener {
@@ -358,11 +349,11 @@ public class ProgramFragment extends Fragment implements CompletionListener {
 		viewPic.setAdjustViewBounds(true);
 		viewPic.setMaxHeight(75);
 		viewPic.setImageBitmap(bm);
-		final MainActivity mainActivity = (MainActivity)getActivity();
+		final Activity activity = getActivity();
 		viewPic.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(mainActivity, PhotoActivity.class);
+				Intent intent = new Intent(activity, PhotoActivity.class);
 				intent.putExtra("fileName", fileName);
 				startActivity(intent); 
 			}

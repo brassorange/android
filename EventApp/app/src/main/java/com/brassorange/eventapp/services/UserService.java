@@ -39,6 +39,7 @@ public class UserService extends AsyncTask<String, Void, String> {
 		actionType = arg0[0];
 
 		if (actionType.equals("profile")) {
+            Log.d(getClass().getSimpleName(), "profile uid: " + arg0[1]);
 			params.add(new BasicNameValuePair("uid", arg0[1]));
 			String response = httpPoster.post(eventApp.getUrlGetProfile(), params);
 			return response;
@@ -74,11 +75,8 @@ public class UserService extends AsyncTask<String, Void, String> {
 			XmlParser xmlParser = new XmlParser();
 			Profile profile = xmlParser.parseProfileResponse(result);
 			if (profile != null) {
-				eventApp.setUid(profile.uid);
-				eventApp.setFirstName(profile.firstName);
-				eventApp.setLastName(profile.lastName);
+				eventApp.createProfile(profile.uid, profile.firstName, profile.lastName, profile.email);
 				eventApp.setBiography(profile.biography);
-				eventApp.setMailAccount(profile.email);
 			}
 			listener.onTaskCompleted();
 		}

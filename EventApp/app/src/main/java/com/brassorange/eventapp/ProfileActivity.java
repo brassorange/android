@@ -11,6 +11,7 @@ import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,14 +33,13 @@ public class ProfileActivity extends Activity implements CompletionListener {
 	private CameraPreview mPreview;
 	private Handler autoFocusHandler;
 
-	TextView txtScan;
-	Button btnScan;
-	LinearLayout cameraWindow;
-	GridLayout profileData;
+    private TextView txtScan;
+    private Button btnScan;
+    private LinearLayout cameraWindow;
+    private GridLayout profileData;
 
-	ImageScanner scanner;
+    private ImageScanner scanner;
 
-	private boolean barcodeScanned = false;
 	private boolean previewing = true;
 
 	static {
@@ -65,27 +65,34 @@ public class ProfileActivity extends Activity implements CompletionListener {
 		btnScan = (Button)findViewById(R.id.btnScan);
 		profileData = (GridLayout)findViewById(R.id.profileData);
 
+        Log.d(getClass().getSimpleName(), "Ready to scan");
 		txtScan.setText("onCreate");
 
 		onTaskCompleted();
 
-		final EventApp eventApp = ((EventApp)this.getApplication());
+		//final EventApp eventApp = ((EventApp)this.getApplication());
 
 		btnScan.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+                String uid = ((EventApp)getApplication()).getUid();
+                Log.d(getClass().getSimpleName(), "Clicked scan button, uid=" + uid);
 				// When ran in emulator
-				if (eventApp.isRanInEmulator()) {
-					getProfile(eventApp.uidInEmulator);
-					return;
-				}
-				if (barcodeScanned) {
-					barcodeScanned = false;
-					txtScan.setText("Scanning...");
-					mCamera.setPreviewCallback(previewCb);
-					mCamera.startPreview();
-					previewing = true;
-					mCamera.autoFocus(autoFocusCb);
-				}
+				//if (eventApp.isRanInEmulator()) {
+				//	getProfile(eventApp.uidInEmulator);
+				//	return;
+				//}
+                btnScan.setEnabled(false);
+				if (uid != null && !uid.equals("")) {
+                    ((EventApp) getApplication()).delProfile();
+                    cameraWindow.setVisibility(View.VISIBLE);
+                    profileData.setVisibility(View.GONE);
+                }
+
+                txtScan.setText("Scanning...");
+                mCamera.setPreviewCallback(previewCb);
+                mCamera.startPreview();
+                previewing = true;
+                mCamera.autoFocus(autoFocusCb);
 			}
 		});
 	}
@@ -107,6 +114,7 @@ public class ProfileActivity extends Activity implements CompletionListener {
 
     private void releaseCamera() {
         if (mCamera != null) {
+            Log.d(getClass().getSimpleName(), "Released the camera");
             previewing = false;
             mCamera.setPreviewCallback(null);
             mCamera.release();
@@ -129,15 +137,17 @@ public class ProfileActivity extends Activity implements CompletionListener {
 			barcode.setData(data);
 
 			int result = scanner.scanImage(barcode);
+            Log.d(getClass().getSimpleName(), "Scanning result: " + result);
 			if (result != 0) {
 				previewing = false;
 				mCamera.setPreviewCallback(null);
 				mCamera.stopPreview();
-				 
+                btnScan.setEnabled(true);
+
 				SymbolSet syms = scanner.getResults();
 				for (Symbol sym : syms) {
+                    Log.d(getClass().getSimpleName(), "Barcode result: " + sym.getData());
 					txtScan.setText("barcode result " + sym.getData());
-					barcodeScanned = true;
 					getProfile(sym.getData());
 				}
 			}
@@ -152,25 +162,29 @@ public class ProfileActivity extends Activity implements CompletionListener {
 	};
 
 	private void getProfile(String profileId) {
+        Log.d(getClass().getSimpleName(), "Get profile: " + profileId);
 //		txtScan.setText("getProfile " + profileId);
-		UserService us = new UserService(this.getApplication(), this);
+		UserService us = new UserService(getApplication(), this);
 		us.execute("profile", profileId);
 	}
 
 	@Override
 	public void onTaskCompleted() {
-		String uid = ((EventApp)this.getApplication()).getUid();
-		String firstName = ((EventApp)this.getApplication()).getFirstName();
-		String lastName = ((EventApp)this.getApplication()).getLastName();
-		String biography = ((EventApp)this.getApplication()).getBiography();
+		String uid = ((EventApp)getApplication()).getUid();
+		String firstName = ((EventApp)getApplication()).getFirstName();
+		String lastName = ((EventApp)getApplication()).getLastName();
+		String biography = ((EventApp)getApplication()).getBiography();
 		String email = ((EventApp)this.getApplication()).getMailAccount();
+        btnScan.setEnabled(false);
 		if (lastName != null && lastName != "") {
+            Log.d(getClass().getSimpleName(), "Profile received: " + uid + ". " + firstName + " " + lastName + " --- " + biography);
 			txtScan.setText(uid + ". " + firstName + " " + lastName + " --- " + biography);
 			cameraWindow.setVisibility(View.GONE);
 			profileData.setVisibility(View.VISIBLE);
 			((TextView)findViewById(R.id.txtName)).setText(firstName);
 			((TextView)findViewById(R.id.txtEmail)).setText(email);
-		}
+            btnScan.setEnabled(true);
+        }
 	}
 
 }

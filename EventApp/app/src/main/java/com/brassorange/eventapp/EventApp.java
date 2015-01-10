@@ -54,35 +54,41 @@ public class EventApp extends Application {
 	}
 
 	public String getUid() {
-		return uid;
-	}
-	public void setUid(String uid) {
-		this.uid = uid;
+		return this.uid;
 	}
 	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		return this.firstName;
 	}
 	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		return this.lastName;
 	}
 	public String getBiography() {
-		return biography;
+		return this.biography;
 	}
+
 	public void setBiography(String biography) {
 		this.biography = biography;
 	}
 	public String getMailAccount() {
-		return mailAccount;
+		return this.mailAccount;
 	}
-	public void setMailAccount(String mailAccount) {
-		this.mailAccount = mailAccount;
-	}
+
+    public void createProfile(String uid, String firstName, String lastName, String mailAccount) {
+        this.uid = uid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mailAccount = mailAccount;
+        //TODO: Restore personal comments, pictures, ratings...
+    }
+
+    public void delProfile() {
+        this.uid = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.biography = "";
+        this.mailAccount = "";
+        //TODO: Remove personal comments, pictures, ratings...
+    }
 
 	public String getUrlAgenda() {
 		return urlAgenda;
