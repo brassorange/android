@@ -9,17 +9,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
-/**
- * Created by bge on 25/12/2014.
- */
 public class HttpRetriever {
     private static final String strDeleteSuffix = "<!-- Hosting24 Analytics Code -->";
 
     private DefaultHttpClient client = new DefaultHttpClient();
-    public String retrieve(String url) {
-
+    public Object retrieve(String url, Class c) {
+        Log.d(getClass().getSimpleName(), "client: " + client);
         Log.d(getClass().getSimpleName(), "retrieve " + url);
         HttpGet getRequest = new HttpGet(url);
 
@@ -35,11 +34,19 @@ public class HttpRetriever {
 
             HttpEntity getResponseEntity = getResponse.getEntity();
             if (getResponseEntity != null) {
-                String response = EntityUtils.toString(getResponseEntity);
-                if (response.contains(strDeleteSuffix))
-                    response = response.substring(0, response.indexOf(strDeleteSuffix));
-                Log.d(getClass().getSimpleName(), "response: " + String.valueOf(response).length() + " bytes.");
-                return response;
+                if (c.equals(String.class)) {
+                    String response = EntityUtils.toString(getResponseEntity);
+                    String strResponse = String.valueOf(response);
+                    if (strResponse.contains(strDeleteSuffix))
+                        strResponse = strResponse.substring(0, strResponse.indexOf(strDeleteSuffix));
+                    Log.d(getClass().getSimpleName(), "response: " + strResponse.length() + " bytes.");
+                    return strResponse;
+                } else if (c.equals(Bitmap.class)) {
+                    byte[] response = EntityUtils.toByteArray(getResponseEntity);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(response, 0, response.length);
+                    Log.d(getClass().getSimpleName(), "size: " + bitmap.getWidth() + " x " + bitmap.getHeight());
+                    return bitmap;
+                }
             }
         }
         catch (IOException e) {

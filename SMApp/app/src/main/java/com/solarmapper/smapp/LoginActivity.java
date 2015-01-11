@@ -274,7 +274,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // Simulate network access.
             HttpRetriever httpRetriever = new HttpRetriever();
             Log.d(this.getClass().getSimpleName(), "authenticate and get API Key ...");
-            String result = httpRetriever.retrieve("http://solarmapper.com/api/v1/login?user=" + mUsername + "&pass=" + mPassword);
+            String result = (String)httpRetriever.retrieve("http://solarmapper.com/api/v1/login?user=" + mUsername + "&pass=" + mPassword, String.class);
             String apiKey = "";
             if (result != null)
                 apiKey = result.replace("\"", "");

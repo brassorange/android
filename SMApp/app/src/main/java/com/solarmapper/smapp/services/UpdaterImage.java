@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.solarmapper.smapp.SMAppWidgetProvider;
-import com.solarmapper.smapp.controllers.HttpImageRetriever;
+import com.solarmapper.smapp.controllers.HttpRetriever;
 
 public class UpdaterImage extends AsyncTask<String, Void, Bitmap> {
     private AppWidgetProvider appWidgetProvider;
@@ -16,9 +16,9 @@ public class UpdaterImage extends AsyncTask<String, Void, Bitmap> {
     }
     @Override
     protected Bitmap doInBackground(String... params) {
-        HttpImageRetriever httpRetriever = new HttpImageRetriever();
+        HttpRetriever httpRetriever = new HttpRetriever();
         Log.d(this.getClass().getSimpleName(), "update from http ...");
-        Bitmap result = httpRetriever.retrieve("http://solarmapper.com" + params[0]);
+        Bitmap result = (Bitmap)httpRetriever.retrieve("http://solarmapper.com" + params[0], Bitmap.class);
         Log.d(this.getClass().getSimpleName(), "update from http done: " + result);
         return result;
     }

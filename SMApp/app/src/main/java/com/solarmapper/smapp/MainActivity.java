@@ -3,6 +3,7 @@ package com.solarmapper.smapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 /*
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -56,7 +58,7 @@ import java.util.Calendar;
 public class MainActivity extends Activity {
     private Menu mOptionsMenu;
     private static final int LOGIN_REQUEST = 1;
-    private PrefTools prefTools = new PrefTools(this);
+    private PrefTools prefTools;
     private String apiKey;
 
     private Calendar calDate;
@@ -75,6 +77,7 @@ public class MainActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        prefTools = new PrefTools(this.getApplicationContext());
         apiKey = prefTools.retrievePreference("apiKey");
         if (apiKey == null || apiKey == "") {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -150,13 +153,18 @@ public class MainActivity extends Activity {
     }
 
     public void buildGraph(float[] values) {
-        buildGraphMP(values);
+        if (values != null) {
+            buildGraphMP(values);
+        } else {
+            Toast.makeText(getApplicationContext(), "No network connection", Toast.LENGTH_LONG).show();
+            return;
+        }
     }
     public void buildGraphMP(float[] values) {
         //https://github.com/PhilJay/MPAndroidChart
         //ArrayList<Entry> vals = new ArrayList<Entry>();
-        ArrayList<BarEntry> vals = new ArrayList<BarEntry>();
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<BarEntry> vals = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>();
         for (int i=0; i<values.length; i++) {
             //Entry entry = new Entry(values[i], i); // 0 == quarter 1
             BarEntry entry = new BarEntry(values[i], i); // 0 == quarter 1
@@ -266,8 +274,9 @@ public class MainActivity extends Activity {
             startActivityForResult(intent, LOGIN_REQUEST);
         } else if (id == R.id.action_logout) {
             prefTools.storePreference("apiKey", "");
-            RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout);
-            layout.removeAllViews();
+            RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout_widget);
+            if (layout != null)
+                layout.removeAllViews();
             adjustMenu();
         } else if (id == R.id.action_settings) {
 //            return true;
