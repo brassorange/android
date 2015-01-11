@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.widget.RemoteViews;
 
 import com.solarmapper.smapp.services.Updater;
@@ -21,8 +22,10 @@ public class SMAppWidgetProvider extends AppWidgetProvider {
     private Context context;
     private AppWidgetManager appWidgetManager;
     private RemoteViews remoteViews;
-    private String apiKey = "";//"YUFzZWJJa2RvNy9VUG02eHE2WCtQdz09";
+    private String apiKey = "";
     private PrefTools prefTools;
+    private int widgetWidth;
+    private int widgetHeight;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -53,8 +56,15 @@ public class SMAppWidgetProvider extends AppWidgetProvider {
         // Update widgets
         ComponentName thisWidget = new ComponentName(context, SMAppWidgetProvider.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        for (int widgetId : allWidgetIds)
+        for (int widgetId : allWidgetIds) {
             appWidgetManager.updateAppWidget(widgetId, this.remoteViews);
+            widgetWidth = appWidgetManager.getAppWidgetInfo(widgetId).minWidth;
+            widgetHeight = appWidgetManager.getAppWidgetInfo(widgetId).minHeight;
+        }
+        if (widgetWidth <= 190)
+            widgetWidth = 190;
+        if (widgetHeight <= 140)
+            widgetHeight = 140;
 
         // Finally, run the updater
         Updater updater = new Updater(this);
@@ -70,7 +80,7 @@ public class SMAppWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.update, "No connection");
         } else {
             float total = 0;
-            String url = "/graphs/bars-consumption?data=";
+            String url = "/graphs/bars-consumption?imageW=" + widgetWidth + "&imageH=" + widgetHeight + "&data=";
             for (float hourly : data) {
                 total += hourly;
                 url += String.valueOf((double) Math.round(hourly * 100) / 100) + ",";
